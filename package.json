@@ -1,0 +1,11 @@
+{
+  "name": "better-auth-ui",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
