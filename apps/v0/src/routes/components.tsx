@@ -40,32 +40,6 @@ function ComponentsPage() {
       status: "ready",
       category: "Authentication",
     },
-    {
-      id: "form",
-      title: "Form Builder",
-      description:
-        "A flexible form builder with various field types and validation",
-      path: "/components/form",
-      status: "coming-soon",
-      category: "Forms",
-    },
-    {
-      id: "card",
-      title: "Card Component",
-      description:
-        "A versatile card component with customizable content sections",
-      path: "/components/card",
-      status: "coming-soon",
-      category: "Layout",
-    },
-    {
-      id: "button",
-      title: "Button Component",
-      description: "A customizable button with various styles and interactions",
-      path: "/components/button",
-      status: "coming-soon",
-      category: "UI Elements",
-    },
   ];
 
   const getStatusBadge = (status: string) => {

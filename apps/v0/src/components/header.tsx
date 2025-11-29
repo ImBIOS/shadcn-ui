@@ -5,6 +5,7 @@ export default function Header() {
     { to: "/", label: "Home" },
     { to: "/docs/$", label: "Docs" },
     { to: "/components", label: "Components" },
+    { to: "/builder", label: "Builder" },
   ] as const;
 
   return (

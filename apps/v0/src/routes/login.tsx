@@ -107,21 +107,13 @@ function LoginComponent() {
                     </Label>
                   </div>
                   <Button className="w-full">Sign In</Button>
-                  <div className="text-center">
-                    <a
-                      className="text-primary text-sm hover:underline"
-                      href="/auth/forgot-password"
-                    >
-                      Forgot your password?
-                    </a>
-                  </div>
                 </div>
 
                 <p className="mt-6 text-center text-muted-foreground text-sm">
                   Don't have an account?{" "}
                   <a
                     className="font-medium text-primary hover:underline"
-                    href="/auth/sign-up"
+                    href="/signup"
                   >
                     Sign up
                   </a>
