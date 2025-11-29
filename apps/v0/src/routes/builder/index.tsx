@@ -4,7 +4,7 @@
  * TanStack Start route for the credential login builder UI.
  *
  * @module @imbios/ui-web/routes/builder
- * Task: T061 [US2] Create builder route apps/web/src/routes/builder/$.tsx
+ * Task: T061 [US2] Create builder route apps/v0/src/routes/builder/$.tsx
  */
 
 import { createFileRoute } from "@tanstack/react-router";

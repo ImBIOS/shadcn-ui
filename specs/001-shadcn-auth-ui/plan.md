@@ -16,7 +16,7 @@ Create a shadcn-style UI library for better-auth 1.4+ with dual installation met
 **Storage**: Static registry JSON files following shadcn schema (<https://ui.shadcn.com/schema/registry-item.json>), no database required
 **Testing**: @testing-library/react 16.x, jsdom 26.x, TDD workflow required, Vitest to be configured
 **Target Platform**: Web (SSG/SSR capable via TanStack Start), deployed to Cloudflare Workers/Pages
-**Project Type**: Monorepo (Nx 22.x workspace) - apps/web for documentation site with builder UI, packages/ui for npm component library, packages/api for registry metadata utilities
+**Project Type**: Monorepo (Nx 22.x workspace) - apps/v0 for documentation site with builder UI, packages/ui for npm component library, packages/api for registry metadata utilities
 **Performance Goals**: TTI < 3s on 3G, component bundle < 10KB gzipped, builder UI preview updates < 500ms, 60 FPS animations
 **Constraints**: WCAG 2.1 AA compliance mandatory, <200ms interaction response, tree-shakeable components, better-auth 1.4+ peer dependency
 **Scale/Scope**: Target 50+ authentication blocks eventually, this iteration: 1 credential login block with email/username/phone + optional remember me/forgot password, builder UI with live preview, dual installation methods (shadcn CLI + npm package)
@@ -147,7 +147,7 @@ ImBIOS UI/
 └── pnpm-workspace.yaml               # pnpm workspaces
 ```
 
-**Structure Decision**: Monorepo architecture using Nx 22.x with pnpm workspaces. Apps contain deployable applications (docs site with builder UI), packages contain reusable libraries (ui package for npm distribution, api for backend utilities, config for shared settings). This mirrors shadcn-ui's monorepo structure and supports dual installation methods: (1) static registry JSON files in apps/web/src/registry/ for shadcn CLI, (2) packages/ui for npm package installation.
+**Structure Decision**: Monorepo architecture using Nx 22.x with pnpm workspaces. Apps contain deployable applications (docs site with builder UI), packages contain reusable libraries (ui package for npm distribution, api for backend utilities, config for shared settings). This mirrors shadcn-ui's monorepo structure and supports dual installation methods: (1) static registry JSON files in apps/v0/src/registry/ for shadcn CLI, (2) packages/ui for npm package installation.
 
 ## Complexity Tracking
 

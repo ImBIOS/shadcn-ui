@@ -27,9 +27,9 @@
 - [X] T005 [P] Create packages/config/tsconfig.base.json with strict mode enabled
 - [X] T006 [P] Configure packages/ui/package.json for NPM package publishing
 - [X] T007 [P] Configure packages/api/package.json for registry utilities
-- [X] T008 [P] Configure apps/web/package.json for documentation site
-- [X] T009 Create apps/web/src/registry/ directory for static registry JSON files
-- [X] T010 Create apps/web/content/docs/ directory structure for MDX documentation
+- [X] T008 [P] Configure apps/v0/package.json for documentation site
+- [X] T009 Create apps/v0/src/registry/ directory for static registry JSON files
+- [X] T010 Create apps/v0/content/docs/ directory structure for MDX documentation
 
 ---
 
@@ -43,7 +43,7 @@
 
 - [X] T011 [P] Create packages/ui/vitest.config.ts with jsdom environment and coverage thresholds
 - [X] T012 [P] Create packages/ui/tests/setup.ts with testing-library configuration
-- [X] T013 [P] Create apps/web/vitest.config.ts for builder UI tests
+- [X] T013 [P] Create apps/v0/vitest.config.ts for builder UI tests
 
 ### i18n Foundation
 
@@ -115,15 +115,15 @@
 
 ### Registry for User Story 1
 
-- [X] T049 [US1] Create apps/web/src/registry/blocks/credential-login/page.tsx wrapper component (depends on T040-T048)
-- [X] T050 [US1] Create apps/web/src/registry/blocks/credential-login/components/credential-login-form.tsx (copy from packages/ui)
-- [X] T051 [US1] Create apps/web/src/registry/credential-login.json following shadcn schema with all dependencies listed
-- [X] T052 [US1] Create apps/web/src/registry/index.json aggregating credential-login block
+- [X] T049 [US1] Create apps/v0/src/registry/blocks/credential-login/page.tsx wrapper component (depends on T040-T048)
+- [X] T050 [US1] Create apps/v0/src/registry/blocks/credential-login/components/credential-login-form.tsx (copy from packages/ui)
+- [X] T051 [US1] Create apps/v0/src/registry/credential-login.json following shadcn schema with all dependencies listed
+- [X] T052 [US1] Create apps/v0/src/registry/index.json aggregating credential-login block
 
 ### Integration Tests for User Story 1
 
 - [X] T053 [US1] Integration test for full authentication flow with mocked better-auth SDK in packages/ui/tests/integration/auth-flow.test.tsx (depends on T040-T048)
-- [X] T054 [US1] Integration test for registry installation simulation in apps/web/tests/integration/registry-install.test.ts
+- [X] T054 [US1] Integration test for registry installation simulation in apps/v0/tests/integration/registry-install.test.ts
 
 ### Accessibility for User Story 1
 
@@ -143,38 +143,38 @@
 
 ### Unit Tests for User Story 2 (TDD - Write First)
 
-- [X] T058 [P] [US2] Unit test for BuilderConfiguration state management in apps/web/tests/unit/builder-state.test.ts
-- [X] T059 [P] [US2] Unit test for builder option toggles in apps/web/tests/unit/builder-options.test.tsx
-- [X] T060 [P] [US2] Unit test for live preview rendering in apps/web/tests/unit/builder-preview.test.tsx
+- [X] T058 [P] [US2] Unit test for BuilderConfiguration state management in apps/v0/tests/unit/builder-state.test.ts
+- [X] T059 [P] [US2] Unit test for builder option toggles in apps/v0/tests/unit/builder-options.test.tsx
+- [X] T060 [P] [US2] Unit test for live preview rendering in apps/v0/tests/unit/builder-preview.test.tsx
 
 ### Builder UI Components for User Story 2
 
-- [X] T061 [P] [US2] Create apps/web/src/routes/builder/$.tsx route with TanStack Start
-- [X] T062 [P] [US2] Create apps/web/src/components/builder/auth-builder.tsx main container component
-- [X] T063 [P] [US2] Create apps/web/src/components/builder/builder-options.tsx configuration sidebar with toggles
-- [X] T064 [P] [US2] Create apps/web/src/components/builder/builder-preview.tsx live preview panel
-- [X] T065 [US2] Create apps/web/src/components/builder/installation-tabs.tsx with shadcn CLI and npm methods (depends on T062-T064)
-- [X] T066 [US2] Create apps/web/src/components/builder/code-preview.tsx with syntax highlighting via fumadocs-core
+- [X] T061 [P] [US2] Create apps/v0/src/routes/builder/$.tsx route with TanStack Start
+- [X] T062 [P] [US2] Create apps/v0/src/components/builder/auth-builder.tsx main container component
+- [X] T063 [P] [US2] Create apps/v0/src/components/builder/builder-options.tsx configuration sidebar with toggles
+- [X] T064 [P] [US2] Create apps/v0/src/components/builder/builder-preview.tsx live preview panel
+- [X] T065 [US2] Create apps/v0/src/components/builder/installation-tabs.tsx with shadcn CLI and npm methods (depends on T062-T064)
+- [X] T066 [US2] Create apps/v0/src/components/builder/code-preview.tsx with syntax highlighting via fumadocs-core
 
 ### Builder State Management for User Story 2
 
-- [X] T067 [US2] Create apps/web/src/lib/builder-state.ts with BuilderConfiguration type and useState management (depends on T061-T066)
-- [X] T068 [US2] Implement authMethod toggle (email/username/phone) with preview update in apps/web/src/components/builder/builder-options.tsx
-- [X] T069 [US2] Implement showRememberMe toggle with preview update in apps/web/src/components/builder/builder-options.tsx
-- [X] T070 [US2] Implement showForgotPassword toggle with preview update in apps/web/src/components/builder/builder-options.tsx
-- [X] T071 [US2] Implement passwordValidation rules UI with preview update in apps/web/src/components/builder/builder-options.tsx
+- [X] T067 [US2] Create apps/v0/src/lib/builder-state.ts with BuilderConfiguration type and useState management (depends on T061-T066)
+- [X] T068 [US2] Implement authMethod toggle (email/username/phone) with preview update in apps/v0/src/components/builder/builder-options.tsx
+- [X] T069 [US2] Implement showRememberMe toggle with preview update in apps/v0/src/components/builder/builder-options.tsx
+- [X] T070 [US2] Implement showForgotPassword toggle with preview update in apps/v0/src/components/builder/builder-options.tsx
+- [X] T071 [US2] Implement passwordValidation rules UI with preview update in apps/v0/src/components/builder/builder-options.tsx
 
 ### Installation Instructions for User Story 2
 
-- [X] T072 [US2] Generate shadcn CLI installation command with static registry URL in apps/web/src/components/builder/installation-tabs.tsx
-- [X] T073 [US2] Display manual customization notes for shadcn method in apps/web/src/components/builder/installation-tabs.tsx
-- [X] T074 [US2] Generate npm package installation command in apps/web/src/components/builder/installation-tabs.tsx
-- [X] T075 [US2] Display prop-based configuration examples matching current builder state in apps/web/src/components/builder/installation-tabs.tsx
+- [X] T072 [US2] Generate shadcn CLI installation command with static registry URL in apps/v0/src/components/builder/installation-tabs.tsx
+- [X] T073 [US2] Display manual customization notes for shadcn method in apps/v0/src/components/builder/installation-tabs.tsx
+- [X] T074 [US2] Generate npm package installation command in apps/v0/src/components/builder/installation-tabs.tsx
+- [X] T075 [US2] Display prop-based configuration examples matching current builder state in apps/v0/src/components/builder/installation-tabs.tsx
 
 ### Integration Tests for User Story 2
 
-- [X] T076 [US2] Integration test for builder UI option toggling and preview updates in apps/web/tests/integration/builder-ui.test.tsx (depends on T061-T075)
-- [X] T077 [US2] Integration test for installation instruction accuracy in apps/web/tests/integration/installation-instructions.test.ts
+- [X] T076 [US2] Integration test for builder UI option toggling and preview updates in apps/v0/tests/integration/builder-ui.test.tsx (depends on T061-T075)
+- [X] T077 [US2] Integration test for installation instruction accuracy in apps/v0/tests/integration/installation-instructions.test.ts
 
 **Checkpoint**: User Story 2 complete - Builder UI is interactive, previews work, installation instructions are accurate
 
@@ -224,19 +224,19 @@
 
 ### Documentation for User Story 4
 
-- [X] T092 [P] [US4] Create apps/web/content/docs/installation/nextjs.mdx with Next.js App Router setup guide
-- [X] T093 [P] [US4] Create apps/web/content/docs/installation/vite.mdx with React + Vite setup guide
-- [X] T094 [P] [US4] Create apps/web/content/docs/installation/tanstack-start.mdx with TanStack Start setup guide
-- [X] T095 [P] [US4] Create apps/web/content/docs/installation/index.mdx with framework comparison table
-- [X] T096 [P] [US4] Create apps/web/content/docs/examples/nextjs-example.mdx with complete Next.js integration code
-- [X] T097 [P] [US4] Create apps/web/content/docs/examples/vite-example.mdx with complete Vite integration code
-- [X] T098 [P] [US4] Create apps/web/content/docs/examples/tanstack-example.mdx with complete TanStack Start integration code
+- [X] T092 [P] [US4] Create apps/v0/content/docs/installation/nextjs.mdx with Next.js App Router setup guide
+- [X] T093 [P] [US4] Create apps/v0/content/docs/installation/vite.mdx with React + Vite setup guide
+- [X] T094 [P] [US4] Create apps/v0/content/docs/installation/tanstack-start.mdx with TanStack Start setup guide
+- [X] T095 [P] [US4] Create apps/v0/content/docs/installation/index.mdx with framework comparison table
+- [X] T096 [P] [US4] Create apps/v0/content/docs/examples/nextjs-example.mdx with complete Next.js integration code
+- [X] T097 [P] [US4] Create apps/v0/content/docs/examples/vite-example.mdx with complete Vite integration code
+- [X] T098 [P] [US4] Create apps/v0/content/docs/examples/tanstack-example.mdx with complete TanStack Start integration code
 
 ### Framework-Specific Examples for User Story 4
 
-- [X] T099 [P] [US4] Create apps/web/content/docs/guides/nextjs-middleware.mdx for route protection
-- [X] T100 [P] [US4] Create apps/web/content/docs/guides/vite-router.mdx for React Router integration
-- [X] T101 [P] [US4] Create apps/web/content/docs/guides/tanstack-route-guards.mdx for beforeLoad protection
+- [X] T099 [P] [US4] Create apps/v0/content/docs/guides/nextjs-middleware.mdx for route protection
+- [X] T100 [P] [US4] Create apps/v0/content/docs/guides/vite-router.mdx for React Router integration
+- [X] T101 [P] [US4] Create apps/v0/content/docs/guides/tanstack-route-guards.mdx for beforeLoad protection
 
 ### Integration Tests for User Story 4
 
@@ -254,37 +254,37 @@
 
 ### Documentation Website
 
-- [X] T105 [P] Create apps/web/content/docs/index.mdx homepage with quick start links
-- [X] T106 [P] Create apps/web/content/docs/getting-started.mdx with 5-minute quickstart
-- [X] T107 [P] Create apps/web/content/docs/components/credential-login.mdx with full API reference
-- [X] T108 [P] Create apps/web/content/docs/configuration/authentication.mdx with authMethod details
-- [X] T109 [P] Create apps/web/content/docs/configuration/validation.mdx with passwordValidation options
-- [X] T110 [P] Create apps/web/content/docs/troubleshooting.mdx with common issues and solutions
+- [X] T105 [P] Create apps/v0/content/docs/index.mdx homepage with quick start links
+- [X] T106 [P] Create apps/v0/content/docs/getting-started.mdx with 5-minute quickstart
+- [X] T107 [P] Create apps/v0/content/docs/components/credential-login.mdx with full API reference
+- [X] T108 [P] Create apps/v0/content/docs/configuration/authentication.mdx with authMethod details
+- [X] T109 [P] Create apps/v0/content/docs/configuration/validation.mdx with passwordValidation options
+- [X] T110 [P] Create apps/v0/content/docs/troubleshooting.mdx with common issues and solutions
 
 ### Additional Documentation
 
 - [X] T111 [P] Update root README.md with project overview and installation instructions
-- [X] T112 [P] Create apps/web/content/docs/contributing.mdx with development setup guide
-- [X] T113 [P] Create apps/web/content/docs/accessibility.mdx documenting WCAG 2.1 AA compliance
-- [X] T114 [P] Create apps/web/content/docs/migration.mdx for future users upgrading from old ImBIOS UI
+- [X] T112 [P] Create apps/v0/content/docs/contributing.mdx with development setup guide
+- [X] T113 [P] Create apps/v0/content/docs/accessibility.mdx documenting WCAG 2.1 AA compliance
+- [X] T114 [P] Create apps/v0/content/docs/migration.mdx for future users upgrading from old ImBIOS UI
 
 ### Performance Optimization
 
 - [X] T115 [P] Add web-vitals package to packages/ui for performance tracking
-- [X] T116 [P] Implement code splitting in apps/web/vite.config.ts for builder UI
+- [X] T116 [P] Implement code splitting in apps/v0/vite.config.ts for builder UI
 - [X] T117 Bundle size analysis for packages/ui ensuring < 10KB per component gzipped
-- [X] T118 Lighthouse audit for apps/web documentation site targeting 90+ scores
+- [X] T118 Lighthouse audit for apps/v0 documentation site targeting 90+ scores
 
 ### Security & Accessibility Hardening
 
 - [X] T119 [P] Run axe-core accessibility audit on all components
 - [X] T120 [P] Implement focus trap for modal states in credential-login-form.tsx
 - [X] T121 Security audit for input sanitization in form components
-- [X] T122 Add Content Security Policy headers to apps/web deployment config
+- [X] T122 Add Content Security Policy headers to apps/v0 deployment config
 
 ### Validation & Testing
 
-- [X] T123 Run all unit tests across packages/ui and apps/web with coverage report
+- [X] T123 Run all unit tests across packages/ui and apps/v0 with coverage report
 - [X] T124 Run all integration tests verifying user story completion
 - [X] T125 Run all E2E tests across frameworks (Next.js, Vite, TanStack Start)
 - [X] T126 Validate registry JSON files against specs/001-shadcn-auth-ui/contracts/registry-item.schema.json

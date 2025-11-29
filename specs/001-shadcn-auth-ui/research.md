@@ -230,7 +230,7 @@ type BuilderState = {
 
 ### Builder UI Tech Stack
 
-- **Framework**: TanStack Start (already in apps/web)
+- **Framework**: TanStack Start (already in apps/v0)
 - **Preview Rendering**: Direct component render (not iframe, simpler for SSR)
 - **Code Highlighting**: fumadocs-core (already included for docs site)
 - **State**: React useState (no external state management needed)
@@ -522,7 +522,7 @@ packages/ui/
         ├── credential-login.spec.ts      # Full installation & usage E2E
         └── accessibility.spec.ts         # Keyboard navigation, screen reader
 
-apps/web/
+apps/v0/
 └── tests/
     ├── unit/
     │   └── builder-ui.test.tsx           # Builder UI component tests
@@ -659,7 +659,7 @@ packages/ui/
         ├── fr.json                    # French
         └── index.ts                   # i18next configuration
 
-apps/web/
+apps/v0/
 └── content/
     └── docs/
         ├── en/                        # English docs

@@ -26,7 +26,7 @@ We copied it from `https://ui.shadcn.com/schema/registry-item.json` at Wed Nov 2
 
 **Usage**:
 
-- Validates registry JSON files in `apps/web/src/registry/`
+- Validates registry JSON files in `apps/v0/src/registry/`
 - Ensures compatibility with `npx shadcn@latest add "URL"` command
 - Used by documentation site to generate registry index
 
@@ -41,7 +41,7 @@ We copied it from `https://ui.shadcn.com/schema/registry-item.json` at Wed Nov 2
 
 ```bash
 # Validate a registry file
-pnpm dlx ajv-cli validate -s registry-item.schema.json -d ../apps/web/src/registry/credential-login.json
+pnpm dlx ajv-cli validate -s registry-item.schema.json -d ../apps/v0/src/registry/credential-login.json
 ```
 
 **Example Registry Item**:
@@ -146,12 +146,12 @@ pnpm add -D ajv-cli
 # Validate single file
 pnpm dlx ajv-cli validate \
   -s contracts/registry-item.schema.json \
-  -d apps/web/src/registry/credential-login.json
+  -d apps/v0/src/registry/credential-login.json
 
 # Validate all registry files
 pnpm dlx ajv-cli validate \
   -s contracts/registry-item.schema.json \
-  -d "apps/web/src/registry/*.json"
+  -d "apps/v0/src/registry/*.json"
 ```
 
 ### TypeScript Type Checking
@@ -163,8 +163,8 @@ Ensure TypeScript interfaces are used correctly:
 cd packages/ui
 pnpm tsc --noEmit
 
-# Type-check apps/web (docs site)
-cd apps/web
+# Type-check apps/v0 (docs site)
+cd apps/v0
 pnpm check-types
 ```
 
@@ -178,7 +178,7 @@ pnpm check-types
 // Test registry item validation
 import Ajv from 'ajv'
 import registrySchema from './registry-item.schema.json'
-import credentialLoginRegistry from '../apps/web/src/registry/credential-login.json'
+import credentialLoginRegistry from '../apps/v0/src/registry/credential-login.json'
 
 const ajv = new Ajv()
 const validate = ajv.compile(registrySchema)

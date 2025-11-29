@@ -56,10 +56,7 @@
       }
     },
     {
-      "includes": [
-        "apps/web/src/routes/**/*.ts",
-        "apps/web/src/routes/**/*.tsx"
-      ],
+      "includes": ["apps/v0/src/routes/**/*.ts", "apps/v0/src/routes/**/*.tsx"],
       "linter": {
         "rules": {
           "style": {

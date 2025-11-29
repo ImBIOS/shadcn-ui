@@ -4,8 +4,8 @@ description: How to contribute to ImBIOS UI
 icon: GitPullRequest
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
 
 # Contributing
 
@@ -25,6 +25,7 @@ By participating in this project, you agree to abide by our Code of Conduct. Ple
     git clone https://github.com/YOUR_USERNAME/ui.git
     cd ui
     ```
+
   </Step>
 
   <Step>
@@ -37,6 +38,7 @@ By participating in this project, you agree to abide by our Code of Conduct. Ple
     <Callout type="info">
       We use pnpm for package management. Please don't use npm or yarn.
     </Callout>
+
   </Step>
 
   <Step>
@@ -45,6 +47,7 @@ By participating in this project, you agree to abide by our Code of Conduct. Ple
     ```bash
     git checkout -b feature/your-feature-name
     ```
+
   </Step>
 
   <Step>
@@ -55,6 +58,7 @@ By participating in this project, you agree to abide by our Code of Conduct. Ple
     ```
 
     The documentation site will be available at http://localhost:3001
+
   </Step>
 </Steps>
 
@@ -128,6 +132,7 @@ git commit -m "test(ui): add unit tests for password validation"
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -178,20 +183,24 @@ export function validatePassword(
 
 ```tsx
 interface ButtonProps {
-  variant?: 'primary' | 'secondary'
-  children: React.ReactNode
-  onClick?: () => void
+  variant?: "primary" | "secondary";
+  children: React.ReactNode;
+  onClick?: () => void;
 }
 
-export function Button({ variant = 'primary', children, onClick }: ButtonProps) {
+export function Button({
+  variant = "primary",
+  children,
+  onClick,
+}: ButtonProps) {
   return (
     <button
-      className={cn('btn', variant === 'primary' && 'btn-primary')}
+      className={cn("btn", variant === "primary" && "btn-primary")}
       onClick={onClick}
     >
       {children}
     </button>
-  )
+  );
 }
 ```
 
@@ -218,11 +227,7 @@ export function Button({ variant = 'primary', children, onClick }: ButtonProps) 
 - Test with screen readers
 
 ```tsx
-<button
-  aria-label="Close dialog"
-  aria-pressed={isPressed}
-  onClick={onClose}
->
+<button aria-label="Close dialog" aria-pressed={isPressed} onClick={onClose}>
   <XIcon aria-hidden="true" />
 </button>
 ```
@@ -238,21 +243,18 @@ export function Button({ variant = 'primary', children, onClick }: ButtonProps) 
 ### Unit Tests
 
 ```typescript
-import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
 
-describe('CredentialLoginForm', () => {
-  it('renders email input when authMethod is email', () => {
-    const mockAuthClient = { signIn: { email: vi.fn() } }
+describe("CredentialLoginForm", () => {
+  it("renders email input when authMethod is email", () => {
+    const mockAuthClient = { signIn: { email: vi.fn() } };
     render(
-      <CredentialLoginForm
-        authMethod="email"
-        authClient={mockAuthClient}
-      />
-    )
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
-  })
-})
+      <CredentialLoginForm authMethod="email" authClient={mockAuthClient} />
+    );
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+  });
+});
 ```
 
 ### Integration Tests
@@ -260,23 +262,25 @@ describe('CredentialLoginForm', () => {
 Test complete user flows with mocked APIs:
 
 ```typescript
-it('completes full login flow', async () => {
+it("completes full login flow", async () => {
   const mockAuthClient = {
     signIn: {
-      email: vi.fn().mockResolvedValue({ user: { id: '1' } })
-    }
-  }
+      email: vi.fn().mockResolvedValue({ user: { id: "1" } }),
+    },
+  };
 
-  render(<CredentialLoginForm authMethod="email" authClient={mockAuthClient} />)
+  render(
+    <CredentialLoginForm authMethod="email" authClient={mockAuthClient} />
+  );
 
-  await userEvent.type(screen.getByLabelText(/email/i), 'test@example.com')
-  await userEvent.type(screen.getByLabelText(/password/i), 'password123')
-  await userEvent.click(screen.getByRole('button', { name: /sign in/i }))
+  await userEvent.type(screen.getByLabelText(/email/i), "test@example.com");
+  await userEvent.type(screen.getByLabelText(/password/i), "password123");
+  await userEvent.click(screen.getByRole("button", { name: /sign in/i }));
 
   await waitFor(() => {
-    expect(mockAuthClient.signIn.email).toHaveBeenCalled()
-  })
-})
+    expect(mockAuthClient.signIn.email).toHaveBeenCalled();
+  });
+});
 ```
 
 ## Adding a New Component
@@ -284,8 +288,8 @@ it('completes full login flow', async () => {
 1. **Create the specification** in `specs/` following the template
 2. **Write tests first** (TDD)
 3. **Implement the component** in `packages/ui/src/components/`
-4. **Add to the registry** in `apps/web/src/registry/`
-5. **Write documentation** in `apps/web/content/docs/components/`
+4. **Add to the registry** in `apps/v0/src/registry/`
+5. **Write documentation** in `apps/v0/content/docs/components/`
 6. **Add to the builder UI** if applicable
 
 ## Adding a New Translation
@@ -335,9 +339,9 @@ it('completes full login flow', async () => {
 ## Recognition
 
 Contributors are recognized in:
+
 - The project's README
 - Release notes
 - The contributors page on the website
 
 Thank you for contributing! 🎉
-

@@ -218,11 +218,13 @@ Represents user input for credential-based authentication.
 #### Validation Rules
 
 ##### Email Method
+
 ```typescript
 z.string().email({ message: "Invalid email address" })
 ```
 
 ##### Username Method
+
 ```typescript
 z.string()
   .min(3, { message: "Username must be at least 3 characters" })
@@ -231,12 +233,14 @@ z.string()
 ```
 
 ##### Phone Method
+
 ```typescript
 z.string()
   .regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid phone number format (E.164)" })
 ```
 
 ##### Password (with PasswordValidation)
+
 ```typescript
 const passwordSchema = z.string()
   .min(passwordValidation.minLength, { message: `Password must be at least ${passwordValidation.minLength} characters` })
@@ -591,9 +595,10 @@ export interface CredentialLoginFormProps {
 
 ### Registry Files (Static JSON)
 
-**Location**: `apps/web/src/registry/`
+**Location**: `apps/v0/src/registry/`
 
 **Structure**:
+
 ```
 registry/
 ├── index.json                     # Central registry index
@@ -601,6 +606,7 @@ registry/
 ```
 
 **index.json** (aggregates all blocks):
+
 ```json
 {
   "name": "@imbios/ui-registry",
@@ -694,4 +700,3 @@ This data model defines 8 core entities with clear relationships, validation rul
 6. ✅ **Error Handling**: Comprehensive error codes with localized messages
 
 Ready to proceed to contract generation (API contracts, TypeScript interfaces).
-

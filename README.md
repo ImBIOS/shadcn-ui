@@ -109,7 +109,7 @@ See [framework-specific guides](https://ui.imbios.dev/docs/installation) for det
 ```
 ImBIOS UI/
 ├── apps/
-│   └── web/                  # Documentation site + builder UI
+│   └── v0/                  # Documentation site + builder UI
 │       ├── content/docs/     # MDX documentation
 │       ├── src/
 │       │   ├── components/   # Site components
@@ -123,7 +123,6 @@ ImBIOS UI/
 │   │   │   ├── lib/          # Validation utilities
 │   │   │   └── locales/      # i18n translations
 │   │   └── tests/            # Unit and integration tests
-│   ├── api/                  # API utilities
 │   └── config/               # Shared configuration
 └── specs/                    # Feature specifications
 ```
@@ -189,7 +188,7 @@ Contributions are welcome! Please read our [Contributing Guide](https://ui.imbio
 
 ## License
 
-MIT © [ImBIOS UI](https://github.com/ImBIOS UI)
+MIT © [ImBIOS UI](<https://github.com/ImBIOS> UI)
 
 ## Related Projects
 
