@@ -4,17 +4,17 @@ import { TanStackStart } from "alchemy/cloudflare";
 
 config({ path: "./.env" });
 
-const app = await alchemy("ui");
+const app = await alchemy("ImBIOS UI");
 
-export const web = await TanStackStart("web", {
+export const v0 = await TanStackStart("v0", {
   bindings: {
-    CORS_ORIGIN: process.env.CORS_ORIGIN || "",
+    CORS_ORIGIN: process.env.CORS_ORIGIN ?? "",
   },
   dev: {
     command: "pnpm run dev",
   },
 });
 
-console.log(`Web    -> ${web.url}`);
+console.log(`v0    -> ${v0.url}`);
 
 await app.finalize();
