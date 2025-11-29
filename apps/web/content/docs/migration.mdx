@@ -1,71 +1,76 @@
 ---
 title: Migration Guide
-description: Migrating to better-auth UI from other solutions
+description: Migrating to ImBIOS UI from other solutions
 icon: ArrowRightLeft
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
 
 # Migration Guide
 
-This guide helps you migrate to better-auth UI from other authentication UI solutions.
+This guide helps you migrate to ImBIOS UI from other authentication UI solutions.
 
 ## From Original better-auth-ui
 
-If you're using the original `better-auth-ui` package (now deprecated), follow these steps:
+If you're using the original `@better-auth-ui/components` package (now renamed to `@imbios/ui`), follow these steps:
 
 <Steps>
   <Step>
     ### Remove the old package
 
     ```bash
-    pnpm remove better-auth-ui
+    pnpm remove @better-auth-ui/components
     ```
+
   </Step>
 
   <Step>
     ### Install the new package
 
     ```bash
-    pnpm add @better-auth-ui/components
+    pnpm add @imbios/ui
     ```
+
   </Step>
 
   <Step>
     ### Update imports
 
     ```diff
-    - import { SignInForm } from 'better-auth-ui'
-    + import { CredentialLoginForm } from '@better-auth-ui/components'
+    - import { CredentialLoginForm } from '@better-auth-ui/components'
+    + import { CredentialLoginForm } from '@imbios/ui'
     ```
+
   </Step>
 
   <Step>
     ### Update component usage
 
+    The component API remains largely compatible, but check for any deprecated props.
+
     ```diff
-    - <SignInForm />
-    + <CredentialLoginForm
-    +   authMethod="email"
-    +   authClient={authClient}
-    + />
+    <CredentialLoginForm
+      authMethod="email"
+      authClient={authClient}
+    />
     ```
+
   </Step>
 </Steps>
 
 ### API Changes
 
-| Old API | New API | Notes |
-|---------|---------|-------|
-| `<SignInForm />` | `<CredentialLoginForm authMethod="email" />` | Explicit auth method required |
-| `mode="email"` | `authMethod="email"` | Renamed prop |
-| `mode="username"` | `authMethod="username"` | Renamed prop |
-| `mode="phone"` | `authMethod="phone"` | Renamed prop |
-| `client` | `authClient` | Renamed for clarity |
-| `onAuth` | `onSuccess` | Renamed for clarity |
-| `onFail` | `onError` | Renamed, now receives `AuthError` |
-| `styles` | `classNames` | More granular styling |
+| Old API           | New API                                      | Notes                             |
+| ----------------- | -------------------------------------------- | --------------------------------- |
+| `<SignInForm />`  | `<CredentialLoginForm authMethod="email" />` | Explicit auth method required     |
+| `mode="email"`    | `authMethod="email"`                         | Renamed prop                      |
+| `mode="username"` | `authMethod="username"`                      | Renamed prop                      |
+| `mode="phone"`    | `authMethod="phone"`                         | Renamed prop                      |
+| `client`          | `authClient`                                 | Renamed for clarity               |
+| `onAuth`          | `onSuccess`                                  | Renamed for clarity               |
+| `onFail`          | `onError`                                    | Renamed, now receives `AuthError` |
+| `styles`          | `classNames`                                 | More granular styling             |
 
 ### Removed Props
 
@@ -88,14 +93,16 @@ If you're migrating from NextAuth's built-in pages:
     ```
 
     Follow the [better-auth migration guide](https://better-auth.com/docs/migrate/nextauth) for backend setup.
+
   </Step>
 
   <Step>
-    ### Install better-auth UI
+    ### Install ImBIOS UI
 
     ```bash
-    pnpm add @better-auth-ui/components
+    pnpm add @imbios/ui
     ```
+
   </Step>
 
   <Step>
@@ -108,6 +115,7 @@ If you're migrating from NextAuth's built-in pages:
       baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
     })
     ```
+
   </Step>
 
   <Step>
@@ -116,7 +124,7 @@ If you're migrating from NextAuth's built-in pages:
     ```tsx title="app/auth/sign-in/page.tsx"
     'use client'
 
-    import { CredentialLoginForm } from '@better-auth-ui/components'
+    import { CredentialLoginForm } from '@imbios/ui'
     import { authClient } from '@/lib/auth-client'
     import { useRouter } from 'next/navigation'
 
@@ -136,18 +144,19 @@ If you're migrating from NextAuth's built-in pages:
       )
     }
     ```
+
   </Step>
 </Steps>
 
 ### Mapping NextAuth Features
 
-| NextAuth | better-auth UI |
-|----------|----------------|
-| `signIn()` | `authClient.signIn.email()` |
-| `signOut()` | `authClient.signOut()` |
-| `useSession()` | `authClient.useSession()` |
-| Providers | OAuth buttons (coming soon) |
-| Credentials provider | `CredentialLoginForm` |
+| NextAuth             | ImBIOS UI                   |
+| -------------------- | --------------------------- |
+| `signIn()`           | `authClient.signIn.email()` |
+| `signOut()`          | `authClient.signOut()`      |
+| `useSession()`       | `authClient.useSession()`   |
+| Providers            | OAuth buttons (coming soon) |
+| Credentials provider | `CredentialLoginForm`       |
 
 ## From Custom Implementation
 
@@ -156,6 +165,7 @@ If you have a custom authentication UI:
 ### 1. Audit your current implementation
 
 Document:
+
 - Authentication methods used (email, username, OAuth)
 - Form validation rules
 - Error handling patterns
@@ -163,12 +173,12 @@ Document:
 
 ### 2. Choose installation method
 
-| Scenario | Recommended Method |
-|----------|-------------------|
-| Heavy customization | shadcn CLI |
-| Standard implementation | npm package |
-| Design system integration | shadcn CLI |
-| Quick setup | npm package |
+| Scenario                  | Recommended Method |
+| ------------------------- | ------------------ |
+| Heavy customization       | shadcn CLI         |
+| Standard implementation   | npm package        |
+| Design system integration | shadcn CLI         |
+| Quick setup               | npm package        |
 
 ### 3. Gradual migration
 
@@ -176,13 +186,13 @@ Migrate page by page:
 
 ```tsx
 // Phase 1: Replace sign-in
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from "@imbios/ui";
 
 // Phase 2: Replace sign-up (when available)
-// import { SignUpForm } from '@better-auth-ui/components'
+// import { SignUpForm } from '@imbios/ui'
 
 // Phase 3: Replace password reset (when available)
-// import { ForgotPasswordForm } from '@better-auth-ui/components'
+// import { ForgotPasswordForm } from '@imbios/ui'
 ```
 
 ### 4. Migrate validation rules
@@ -192,20 +202,20 @@ Map your validation to `passwordValidation`:
 ```tsx
 // Old custom validation
 const validatePassword = (password) => {
-  if (password.length < 8) return 'Too short'
-  if (!/[A-Z]/.test(password)) return 'Need uppercase'
-  if (!/[0-9]/.test(password)) return 'Need number'
-  return null
-}
+  if (password.length < 8) return "Too short";
+  if (!/[A-Z]/.test(password)) return "Need uppercase";
+  if (!/[0-9]/.test(password)) return "Need number";
+  return null;
+};
 
-// New better-auth UI config
+// New ImBIOS UI config
 <CredentialLoginForm
   passwordValidation={{
     minLength: 8,
     requireUppercase: true,
     requireNumbers: true,
   }}
-/>
+/>;
 ```
 
 ### 5. Migrate styling
@@ -219,7 +229,7 @@ Map your styles to `classNames`:
   <button className="my-button" />
 </form>
 
-// New better-auth UI
+// New ImBIOS UI
 <CredentialLoginForm
   className="my-form"
   classNames={{
@@ -239,7 +249,7 @@ If migrating from Clerk or Auth0's embedded UIs:
 
 1. Set up better-auth backend (see [better-auth docs](https://better-auth.com/docs))
 2. Migrate user data
-3. Install better-auth UI
+3. Install ImBIOS UI
 4. Replace UI components
 
 ## Troubleshooting Migration
@@ -251,15 +261,14 @@ If your styles don't match:
 1. Ensure Tailwind CSS is configured
 2. Add component paths to `tailwind.config.js`:
    ```js
-   content: [
-     './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
-   ]
+   content: ["./node_modules/@imbios/ui/**/*.{js,ts,jsx,tsx}"];
    ```
 3. Use `classNames` prop for custom styling
 
 ### Auth client not working
 
 Verify:
+
 1. better-auth is configured correctly on the server
 2. API routes are set up (`/api/auth/[...all]`)
 3. `baseURL` in authClient matches your server
@@ -267,13 +276,13 @@ Verify:
 ### TypeScript errors
 
 Ensure compatible versions:
+
 ```bash
-pnpm add better-auth@^1.4.0 @better-auth-ui/components@latest
+pnpm add better-auth@^1.4.0 @imbios/ui@latest
 ```
 
 ## Getting Help
 
 - [Discord Community](https://discord.gg/better-auth)
-- [GitHub Discussions](https://github.com/better-auth-ui/better-auth-ui/discussions)
-- [GitHub Issues](https://github.com/better-auth-ui/better-auth-ui/issues)
-
+- [GitHub Discussions](https://github.com/ImBIOS/ui/discussions)
+- [GitHub Issues](https://github.com/ImBIOS/ui/issues)

@@ -1,11 +1,11 @@
 ---
 title: React (Vite) Installation
-description: Set up better-auth-ui with React and Vite
+description: Set up ImBIOS UI with React and Vite
 ---
 
 # React (Vite) Installation
 
-This guide covers installing better-auth-ui in a React project using Vite and React Router.
+This guide covers installing ImBIOS UI in a React project using Vite and React Router.
 
 ## Prerequisites
 
@@ -54,19 +54,19 @@ export const auth = betterAuth({
 ### Option A: shadcn CLI
 
 ```bash
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 ```
 
 ### Option B: NPM Package
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 ## Step 5: Create Sign-In Route
 
 ```tsx title="src/routes/auth/sign-in.tsx"
-import { CredentialLoginForm } from "@better-auth-ui/components";
+import { CredentialLoginForm } from "@imbios/ui";
 // or: import { CredentialLoginForm } from '@/components/auth/credential-login-form'
 import { authClient } from "@/lib/auth-client";
 import { useNavigate } from "react-router-dom";
@@ -139,7 +139,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     // For NPM package:
-    "./node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@imbios/ui/**/*.{js,ts,jsx,tsx}",
   ],
   // ...
 };

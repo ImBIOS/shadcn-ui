@@ -1,6 +1,6 @@
 /**
  * Focus trap utility for modal/dialog accessibility
- * @module @better-auth-ui/components/focus-trap
+ * @module @imbios/ui/focus-trap
  */
 
 import { type RefObject, useEffect, useRef } from "react";

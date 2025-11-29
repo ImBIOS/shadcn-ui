@@ -6,7 +6,7 @@
 
 ## Overview
 
-This document defines the core entities, their relationships, state transitions, and validation rules for the better-auth-ui library. The model is derived from the feature specification and research findings.
+This document defines the core entities, their relationships, state transitions, and validation rules for the ImBIOS UI library. The model is derived from the feature specification and research findings.
 
 ---
 
@@ -603,14 +603,14 @@ registry/
 **index.json** (aggregates all blocks):
 ```json
 {
-  "name": "@better-auth-ui/registry",
+  "name": "@imbios/ui-registry",
   "version": "0.1.0",
   "items": [
     {
       "name": "credential-login",
       "type": "registry:block",
       "description": "A credential-based login form with email/username/phone support",
-      "url": "https://better-auth-ui.com/r/credential-login.json"
+      "url": "https://ui.imbios.dev/r/credential-login.json"
     }
   ]
 }

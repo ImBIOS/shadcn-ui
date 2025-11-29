@@ -1,6 +1,6 @@
-# @better-auth-ui/components
+# @imbios/ui
 
-[![npm version](https://img.shields.io/npm/v/@better-auth-ui/components.svg)](https://www.npmjs.com/package/@better-auth-ui/components)
+[![npm version](https://img.shields.io/npm/v/@imbios/ui.svg)](https://www.npmjs.com/package/@imbios/ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Beautifully designed authentication UI components for [better-auth](https://better-auth.com). Built with React, Radix UI, and Tailwind CSS.
@@ -19,13 +19,13 @@ Beautifully designed authentication UI components for [better-auth](https://bett
 
 ```bash
 # npm
-npm install @better-auth-ui/components
+npm install @imbios/ui
 
 # pnpm
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 
 # yarn
-yarn add @better-auth-ui/components
+yarn add @imbios/ui
 ```
 
 ### Peer Dependencies
@@ -53,7 +53,7 @@ export const authClient = createAuthClient({
 
 ```tsx
 // app/auth/sign-in/page.tsx
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 
 export default function SignInPage() {
@@ -199,7 +199,7 @@ interface CredentialLoginClassNames {
 // app/auth/sign-in/page.tsx
 'use client'
 
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 
@@ -219,7 +219,7 @@ export default function SignInPage() {
 ### React Router (Vite)
 
 ```tsx
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 import { useNavigate } from 'react-router-dom'
 
@@ -240,7 +240,7 @@ export default function SignInPage() {
 
 ```tsx
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/auth/sign-in')({
@@ -269,7 +269,7 @@ Ensure your Tailwind CSS configuration includes this package:
 module.exports = {
   content: [
     // ... your paths
-    './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@imbios/ui/**/*.{js,ts,jsx,tsx}',
   ],
 }
 ```
@@ -279,7 +279,7 @@ module.exports = {
 The component supports i18n via i18next. To customize translations:
 
 ```typescript
-import { i18n } from '@better-auth-ui/components'
+import { i18n } from '@imbios/ui'
 
 i18n.addResourceBundle('es', 'translation', {
   auth: {
@@ -304,13 +304,13 @@ import type {
   AuthError,
   AuthMethod,
   CredentialLoginClassNames,
-} from '@better-auth-ui/components'
+} from '@imbios/ui'
 
 // Type guards
 import {
   isAuthError,
   isAuthenticationResponse,
-} from '@better-auth-ui/components'
+} from '@imbios/ui'
 ```
 
 ## Alternative Installation: shadcn CLI
@@ -318,22 +318,22 @@ import {
 If you prefer to copy the source code into your project for full customization:
 
 ```bash
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 ```
 
 This installs the component source code directly, allowing you to modify it freely.
 
 ## Contributing
 
-Contributions are welcome! Please read our [contributing guide](https://github.com/better-auth-ui/better-auth-ui/blob/main/CONTRIBUTING.md) for details.
+Contributions are welcome! Please read our [contributing guide](https://github.com/ImBIOS/ui/blob/main/CONTRIBUTING.md) for details.
 
 ## License
 
-MIT © [better-auth-ui](https://github.com/better-auth-ui)
+MIT © [ImBIOS](https://github.com/ImBIOS)
 
 ## Links
 
-- [Documentation](https://better-auth-ui.com/docs)
-- [GitHub](https://github.com/better-auth-ui/better-auth-ui)
+- [Documentation](https://ui.imbios.dev/docs)
+- [GitHub](https://github.com/ImBIOS/ui)
 - [better-auth](https://better-auth.com)
 - [shadcn/ui](https://ui.shadcn.com)

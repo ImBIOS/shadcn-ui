@@ -33,7 +33,7 @@ import { Label } from "./ui/label";
  *
  * @example
  * ```tsx
- * import { CredentialLoginForm } from '@better-auth-ui/components'
+ * import { CredentialLoginForm } from '@imbios/ui'
  * import { authClient } from '@/lib/auth-client'
  *
  * <CredentialLoginForm

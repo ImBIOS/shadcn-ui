@@ -133,7 +133,7 @@ A developer working with Next.js, React (Vite), or TanStack Start wants to add a
 - **SC-001**: A developer can explore available credential login options in the builder UI and see live preview updates in under 2 minutes
 - **SC-002**: A developer with better-auth configured can install the credential login block via either method (shadcn CLI with static JSON or npm package) and render it in under 5 minutes
 - **SC-003**: The credential login block successfully authenticates users using better-auth 1.4 client methods without errors for all configured options (email/username/phone)
-- **SC-004**: Zero critical bugs from the original better-auth-ui bug tracker are present in the credential login block implementation
+- **SC-004**: Zero critical bugs from the original ImBIOS UI bug tracker are present in the credential login block implementation
 - **SC-005**: Builder UI loads and displays the interactive preview in under 3 seconds, with preview updates occurring in under 500ms after option changes
 - **SC-006**: Both installation methods (shadcn CLI and npm) succeed on all three supported frameworks (Next.js, React with Vite, TanStack Start)
 - **SC-007**: 100% of better-auth 1.4 credential authentication features are supported by the credential login block

@@ -1,11 +1,7 @@
 {
   "extends": "./packages/config/tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@better-auth-ui/api": ["packages/api/src/index.ts"],
-      "@better-auth-ui/api/*": ["packages/api/src/*"]
-    }
+    "baseUrl": "."
   },
   "exclude": ["node_modules", "tmp", "dist", ".nx"]
 }

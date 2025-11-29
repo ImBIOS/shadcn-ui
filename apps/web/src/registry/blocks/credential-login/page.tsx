@@ -6,7 +6,7 @@
  *
  * @example
  * ```bash
- * npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+ * npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
  * ```
  */
 

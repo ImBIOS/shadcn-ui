@@ -18,11 +18,11 @@ import {
 describe("Integration: Installation Instructions Accuracy", () => {
   describe("shadcn CLI Command", () => {
     it("generates correct command with registry URL", () => {
-      const url = "https://better-auth-ui.com/r/credential-login";
+      const url = "https://ui.imbios.dev/r/credential-login";
       const command = generateShadcnCommand(url);
 
       expect(command).toBe(
-        'npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"'
+        'npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"'
       );
     });
 
@@ -40,7 +40,7 @@ describe("Integration: Installation Instructions Accuracy", () => {
     it("generates correct pnpm install command", () => {
       const command = generateNpmCommand();
 
-      expect(command).toBe("pnpm add @better-auth-ui/components");
+      expect(command).toBe("pnpm add @imbios/ui");
     });
   });
 
@@ -62,7 +62,7 @@ describe("Integration: Installation Instructions Accuracy", () => {
 
         // Should include imports
         expect(code).toContain(
-          "import { CredentialLoginForm } from '@better-auth-ui/components'"
+          "import { CredentialLoginForm } from '@imbios/ui'"
         );
         expect(code).toContain(
           "import { authClient } from '@/lib/auth-client'"

@@ -4,7 +4,7 @@
  * Manages the state for the credential login builder UI,
  * allowing users to configure options and see live previews.
  *
- * @module @better-auth-ui/web/builder
+ * @module @imbios/ui-web/builder
  */
 
 import { useCallback, useState } from "react";
@@ -227,7 +227,7 @@ export function generateShadcnCommand(registryUrl: string): string {
  * Generate npm package installation command
  */
 export function generateNpmCommand(): string {
-  return "pnpm add @better-auth-ui/components";
+  return "pnpm add @imbios/ui";
 }
 
 /**
@@ -288,7 +288,7 @@ export function generateUsageCode(config: BuilderConfiguration): string {
 
   props.push('onSuccess={() => router.push("/dashboard")}');
 
-  return `import { CredentialLoginForm } from '@better-auth-ui/components'
+  return `import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 
 export default function SignInPage() {

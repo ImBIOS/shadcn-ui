@@ -1,11 +1,11 @@
 ---
 title: Next.js Installation
-description: Set up better-auth-ui with Next.js App Router
+description: Set up ImBIOS UI with Next.js App Router
 ---
 
 # Next.js Installation
 
-This guide covers installing better-auth-ui in a Next.js 14+ project using the App Router.
+This guide covers installing ImBIOS UI in a Next.js 14+ project using the App Router.
 
 ## Prerequisites
 
@@ -62,13 +62,13 @@ export const authClient = createAuthClient({
 ### Option A: shadcn CLI
 
 ```bash
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 ```
 
 ### Option B: NPM Package
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 ## Step 6: Create Sign-In Page
@@ -76,7 +76,7 @@ pnpm add @better-auth-ui/components
 ```tsx title="app/auth/sign-in/page.tsx"
 'use client'
 
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 // or: import { CredentialLoginForm } from '@/components/auth/credential-login-form'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
@@ -116,7 +116,7 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     // For NPM package:
-    './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@imbios/ui/**/*.{js,ts,jsx,tsx}',
   ],
   // ...
 }

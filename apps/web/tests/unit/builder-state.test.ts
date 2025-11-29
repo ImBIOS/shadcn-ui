@@ -374,11 +374,11 @@ describe("BuilderConfiguration State Management", () => {
   describe("Utility Functions", () => {
     describe("generateShadcnCommand", () => {
       it("generates correct shadcn CLI command", () => {
-        const url = "https://better-auth-ui.com/r/credential-login";
+        const url = "https://ui.imbios.dev/r/credential-login";
         const command = generateShadcnCommand(url);
 
         expect(command).toBe(
-          'npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"'
+          'npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"'
         );
       });
     });
@@ -387,7 +387,7 @@ describe("BuilderConfiguration State Management", () => {
       it("generates correct npm install command", () => {
         const command = generateNpmCommand();
 
-        expect(command).toBe("pnpm add @better-auth-ui/components");
+        expect(command).toBe("pnpm add @imbios/ui");
       });
     });
 

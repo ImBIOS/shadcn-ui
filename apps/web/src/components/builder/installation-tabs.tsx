@@ -3,7 +3,7 @@
  *
  * Shows installation instructions for both shadcn CLI and npm package methods.
  *
- * @module @better-auth-ui/web/builder
+ * @module @imbios/ui-web/builder
  * Task: T065 [US2] Create installation-tabs.tsx with CLI/npm methods
  */
 
@@ -22,7 +22,7 @@ import { CodePreview } from "./code-preview";
 // Constants
 // ============================================================================
 
-const REGISTRY_URL = "https://better-auth-ui.com/r/credential-login";
+const REGISTRY_URL = "https://ui.imbios.dev/r/credential-login";
 
 // ============================================================================
 // Types
@@ -223,7 +223,7 @@ function NpmTabContent({ config }: { config: BuilderConfiguration }) {
         <p className="mt-1 text-muted-foreground">
           Update to the latest version with:{" "}
           <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
-            pnpm update @better-auth-ui/components
+            pnpm update @imbios/ui
           </code>
         </p>
       </div>

@@ -5,21 +5,21 @@ description: Choose the right installation method and framework for your project
 
 # Installation
 
-better-auth-ui components can be installed using two methods, each with its own advantages. Choose the method that best fits your workflow.
+ImBIOS UI components can be installed using two methods, each with its own advantages. Choose the method that best fits your workflow.
 
 ## Installation Methods
 
 | Method          | Command                               | Best For                                  |
 | --------------- | ------------------------------------- | ----------------------------------------- |
 | **shadcn CLI**  | `npx shadcn@latest add "URL"`         | Full customization, source code ownership |
-| **NPM Package** | `pnpm add @better-auth-ui/components` | Managed updates, quick setup              |
+| **NPM Package** | `pnpm add @imbios/ui` | Managed updates, quick setup              |
 
 ### shadcn CLI (Recommended for Customization)
 
 Copy the component source code directly into your project. You own the code and can customize everything.
 
 ```bash
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 ```
 
 **Pros:**
@@ -38,7 +38,7 @@ npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
 Install as a dependency with automatic updates via your package manager.
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 **Pros:**
@@ -83,16 +83,16 @@ Already have better-auth configured? Jump straight to installation:
 
 ```bash
 # Option 1: shadcn CLI
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 
 # Option 2: NPM Package
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 Then import and use:
 
 ```tsx
-import { CredentialLoginForm } from "@better-auth-ui/components";
+import { CredentialLoginForm } from "@imbios/ui";
 // or: import { CredentialLoginForm } from '@/components/auth/credential-login-form'
 
 <CredentialLoginForm

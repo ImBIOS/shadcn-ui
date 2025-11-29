@@ -1,12 +1,12 @@
 ---
 title: Getting Started
-description: Get up and running with better-auth UI in 5 minutes
+description: Get up and running with ImBIOS UI in 5 minutes
 icon: Zap
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Callout } from "fumadocs-ui/components/callout";
 
 # Getting Started
 
@@ -22,7 +22,8 @@ Before you begin, make sure you have:
 - better-auth 1.4+ installed and configured
 
 <Callout type="warn">
-  If you haven't set up better-auth yet, follow the [better-auth documentation](https://better-auth.com/docs) first.
+  If you haven't set up better-auth yet, follow the [better-auth
+  documentation](https://better-auth.com/docs) first.
 </Callout>
 
 ## Quick Setup
@@ -38,50 +39,36 @@ Before you begin, make sure you have:
       baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
     })
     ```
+
   </Step>
 
   <Step>
     ### Install the credential login block
 
-    <Tabs items={['shadcn CLI', 'npm Package']}>
-      <Tab value="shadcn CLI">
+    <Tabs items={['npm Package', 'shadcn CLI']}>
+          <Tab value="npm Package">
         ```bash
-        npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+        pnpm add @imbios/ui
         ```
       </Tab>
-      <Tab value="npm Package">
+      <Tab value="shadcn CLI">
         ```bash
-        pnpm add @better-auth-ui/components
+        npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
         ```
       </Tab>
     </Tabs>
+
   </Step>
 
   <Step>
     ### Create your sign-in page
 
     <Tabs items={['shadcn CLI', 'npm Package']}>
-      <Tab value="shadcn CLI">
-        ```tsx title="app/auth/sign-in/page.tsx"
-        import { CredentialLoginForm } from '@/components/auth/credential-login-form'
-        import { authClient } from '@/lib/auth-client'
-
-        export default function SignInPage() {
-          return (
-            <div className="flex min-h-screen items-center justify-center p-6">
-              <div className="w-full max-w-sm">
-                <CredentialLoginForm authClient={authClient} />
-              </div>
-            </div>
-          )
-        }
-        ```
-      </Tab>
-      <Tab value="npm Package">
+          <Tab value="npm Package">
         ```tsx title="app/auth/sign-in/page.tsx"
         'use client'
 
-        import { CredentialLoginForm } from '@better-auth-ui/components'
+        import { CredentialLoginForm } from '@imbios/ui'
         import { authClient } from '@/lib/auth-client'
         import { useRouter } from 'next/navigation'
 
@@ -104,7 +91,24 @@ Before you begin, make sure you have:
         }
         ```
       </Tab>
+      <Tab value="shadcn CLI">
+        ```tsx title="app/auth/sign-in/page.tsx"
+        import { CredentialLoginForm } from '@/components/auth/credential-login-form'
+        import { authClient } from '@/lib/auth-client'
+
+        export default function SignInPage() {
+          return (
+            <div className="flex min-h-screen items-center justify-center p-6">
+              <div className="w-full max-w-sm">
+                <CredentialLoginForm authClient={authClient} />
+              </div>
+            </div>
+          )
+        }
+        ```
+      </Tab>
     </Tabs>
+
   </Step>
 
   <Step>
@@ -115,6 +119,7 @@ Before you begin, make sure you have:
     ```
 
     Navigate to `/auth/sign-in` and you should see your login form!
+
   </Step>
 </Steps>
 
@@ -172,12 +177,10 @@ The component is highly configurable:
   // Authentication method
   authMethod="email" // 'email' | 'username' | 'phone'
   authClient={authClient}
-
   // Optional features
   showRememberMe={true}
   showForgotPassword={true}
   forgotPasswordUrl="/auth/forgot-password"
-
   // Password validation
   passwordValidation={{
     minLength: 12,
@@ -185,19 +188,16 @@ The component is highly configurable:
     requireNumbers: true,
     requireSymbols: true,
   }}
-
   // Callbacks
-  onSuccess={() => console.log('Logged in!')}
+  onSuccess={() => console.log("Logged in!")}
   onError={(error) => console.error(error)}
-
   // Styling
   className="my-custom-class"
   classNames={{
-    form: 'space-y-6',
-    button: 'bg-blue-600 hover:bg-blue-700',
+    form: "space-y-6",
+    button: "bg-blue-600 hover:bg-blue-700",
   }}
 />
 ```
 
 See the [full API reference](/docs/components/credential-login) for all available props.
-

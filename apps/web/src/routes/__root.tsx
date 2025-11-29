@@ -1,7 +1,5 @@
-import type { QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
-  createRootRouteWithContext,
+  createRootRoute,
   HeadContent,
   Outlet,
   Scripts,
@@ -11,15 +9,9 @@ import { RootProvider } from "fumadocs-ui/provider/tanstack";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/lib/theme-provider";
-import type { orpc } from "@/utils/orpc";
 import appCss from "../index.css?url";
 
-export type RouterAppContext = {
-  orpc: typeof orpc;
-  queryClient: QueryClient;
-};
-
-export const Route = createRootRouteWithContext<RouterAppContext>()({
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
@@ -30,7 +22,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "My App",
+        title: "ImBIOS UI",
       },
     ],
     links: [
@@ -66,7 +58,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           </div>
           <Toaster richColors />
           <TanStackRouterDevtools position="bottom-left" />
-          <ReactQueryDevtools buttonPosition="bottom-right" position="bottom" />
         </ThemeProvider>
         <Scripts />
       </body>

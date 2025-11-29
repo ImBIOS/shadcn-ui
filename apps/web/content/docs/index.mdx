@@ -1,5 +1,5 @@
 ---
-title: better-auth UI
+title: ImBIOS UI
 description: Beautiful, accessible authentication components for better-auth. Install via shadcn CLI or npm package.
 icon: Shield
 ---
@@ -8,7 +8,7 @@ import { Card, Cards } from 'fumadocs-ui/components/card';
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
-# better-auth UI
+# ImBIOS UI
 
 Beautiful, accessible authentication components for [better-auth](https://better-auth.com). Choose your installation method:
 
@@ -40,7 +40,7 @@ Beautiful, accessible authentication components for [better-auth](https://better
 <Tabs items={['shadcn CLI', 'npm Package']}>
   <Tab value="shadcn CLI">
     ```bash
-    npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+    npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
     ```
 
     - Full source code ownership
@@ -49,7 +49,7 @@ Beautiful, accessible authentication components for [better-auth](https://better
   </Tab>
   <Tab value="npm Package">
     ```bash
-    pnpm add @better-auth-ui/components
+    pnpm add @imbios/ui
     ```
 
     - Managed updates via npm
@@ -100,7 +100,7 @@ Beautiful, accessible authentication components for [better-auth](https://better
 ## Quick Example
 
 ```tsx
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 
 export function SignInPage() {

@@ -1,10 +1,10 @@
 /**
  * Component Props Contract
  *
- * TypeScript interfaces for the @better-auth-ui/components NPM package.
+ * TypeScript interfaces for the @imbios/ui NPM package.
  * These types define the public API for authentication block components.
  *
- * @module @better-auth-ui/components
+ * @module @imbios/ui
  * @version 0.1.0
  */
 
@@ -133,7 +133,7 @@ export type CredentialLoginClassNames = {
  *
  * @example
  * ```tsx
- * import { CredentialLoginForm } from '@better-auth-ui/components'
+ * import { CredentialLoginForm } from '@imbios/ui'
  * import { authClient } from '@/lib/auth-client'
  *
  * export function SignInPage() {

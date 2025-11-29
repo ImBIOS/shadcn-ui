@@ -6,12 +6,21 @@ import mdx from "fumadocs-mdx/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+// add other Fumadocs deps as needed
+// @see https://fumadocs.dev/docs/ui#for-vite
+// @see https://github.com/vitejs/vite/issues/3910
+const fumadocsDeps = ["fumadocs-core", "fumadocs-ui"];
+
 export default defineConfig({
   plugins: [
     mdx(await import("./source.config")),
     tsconfigPaths(),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({
+      prerender: {
+        enabled: true,
+      },
+    }),
     viteReact(),
     alchemy(),
   ],
@@ -30,5 +39,11 @@ export default defineConfig({
     minify: "esbuild",
     // Source maps for debugging (disable in prod for smaller bundles)
     sourcemap: process.env.NODE_ENV !== "production",
+  },
+  resolve: {
+    noExternal: fumadocsDeps,
+  },
+  optimizeDeps: {
+    exclude: fumadocsDeps,
   },
 });

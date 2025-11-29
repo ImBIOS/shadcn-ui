@@ -1,6 +1,6 @@
 /**
  * Security utilities for input sanitization and validation
- * @module @better-auth-ui/components/security
+ * @module @imbios/ui/security
  */
 
 /**

@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "v0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,12 +14,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@better-auth-ui/api": "workspace:*",
-    "@orpc/client": "catalog:",
-    "@orpc/openapi": "catalog:",
-    "@orpc/server": "catalog:",
-    "@orpc/tanstack-query": "^1.10.0",
-    "@orpc/zod": "catalog:",
     "@tailwindcss/vite": "^4.1.8",
     "@tanstack/react-form": "^1.23.5",
     "@tanstack/react-query": "^5.85.5",
@@ -45,9 +39,9 @@
     "zod": "^4.0.2"
   },
   "devDependencies": {
-    "@better-auth-ui/config": "workspace:*",
     "@cloudflare/vite-plugin": "^1.13.8",
     "@dotenvx/dotenvx": "^1.51.1",
+    "@imbios/ui-config": "workspace:*",
     "@tanstack/react-query-devtools": "^5.85.5",
     "@tanstack/react-router-devtools": "^1.132.31",
     "@testing-library/dom": "^10.4.0",

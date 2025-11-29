@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial release of @better-auth-ui/components
+- Initial release of @imbios/ui
 - `CredentialLoginForm` component with support for:
   - Email authentication
   - Username authentication
@@ -71,6 +71,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - i18next ^25.x
 - react-i18next ^16.x
 
-[Unreleased]: https://github.com/better-auth-ui/better-auth-ui/compare/v0.1.1...HEAD
-[0.1.1]: https://github.com/better-auth-ui/better-auth-ui/compare/v0.1.0...v0.1.1
-[0.1.0]: https://github.com/better-auth-ui/better-auth-ui/releases/tag/v0.1.0
+[Unreleased]: https://github.com/ImBIOS/ui/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/ImBIOS/ui/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/ImBIOS/ui/releases/tag/v0.1.0

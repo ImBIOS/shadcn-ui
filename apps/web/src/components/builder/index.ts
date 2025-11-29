@@ -1,7 +1,7 @@
 /**
  * Builder Components Index
  *
- * @module @better-auth-ui/web/builder
+ * @module @imbios/ui-web/builder
  */
 
 export { AuthBuilder } from "./auth-builder";

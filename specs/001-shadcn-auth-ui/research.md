@@ -6,7 +6,7 @@
 
 ## Purpose
 
-This document consolidates research findings for building a shadcn-style UI library for better-auth 1.4+. All technical unknowns from the planning phase have been resolved through analysis of reference implementations (shadcn-ui, Kinfe's better-auth-ui, original better-auth-ui).
+This document consolidates research findings for building a shadcn-style UI library for better-auth 1.4+. All technical unknowns from the planning phase have been resolved through analysis of reference implementations (shadcn-ui, Kinfe's ImBIOS UI, original ImBIOS UI).
 
 ---
 
@@ -84,7 +84,7 @@ type RegistryItem = {
 
 **Rationale**: better-auth 1.4 provides a TypeScript SDK (not REST API) with three distinct authentication methods for credential-based login. Each must be handled separately based on user input validation.
 
-### SDK Methods (from original better-auth-ui/src/components/auth/forms/sign-in-form.tsx)
+### SDK Methods (from original ImBIOS UI/src/components/auth/forms/sign-in-form.tsx)
 
 ```typescript
 // Email authentication
@@ -194,7 +194,7 @@ await authClient.signIn.phone({
    - **Tab 1 - shadcn CLI Method**:
 
      ```bash
-     npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+     npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
      ```
 
      - Shows static registry URL
@@ -204,11 +204,11 @@ await authClient.signIn.phone({
    - **Tab 2 - NPM Package Method**:
 
      ```bash
-     pnpm add @better-auth-ui/components
+     pnpm add @imbios/ui
      ```
 
      ```tsx
-     import { CredentialLoginForm } from '@better-auth-ui/components'
+     import { CredentialLoginForm } from '@imbios/ui'
 
      <CredentialLoginForm
        authMethod="email"
@@ -242,9 +242,9 @@ type BuilderState = {
 
 ---
 
-## 4. Critical Bugs from Original better-auth-ui to Avoid
+## 4. Critical Bugs from Original ImBIOS UI to Avoid
 
-### Research Method: Issue analysis of better-auth-ui/better-auth-ui repository
+### Research Method: Issue analysis of ImBIOS UI/ImBIOS UI repository
 
 **Note**: Actual bug list requires GitHub issue search. Placeholder research for demonstration.
 
@@ -318,7 +318,7 @@ type CredentialLoginFormProps = {
 'use client'
 import { useRouter } from 'next/navigation'
 import { authClient } from '@/lib/auth-client'
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 
 export function CredentialLoginNext() {
   const router = useRouter()
@@ -339,7 +339,7 @@ export function CredentialLoginNext() {
 ## Installation
 
 1. Install better-auth and configure client
-2. Install block: `npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"`
+2. Install block: `npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"`
 3. Create auth route: `app/auth/sign-in/page.tsx`
 4. Import and use CredentialLoginForm
 5. Configure middleware for protected routes
@@ -351,7 +351,7 @@ export function CredentialLoginNext() {
 ## Installation
 
 1. Install better-auth and configure client
-2. Install block: `npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"`
+2. Install block: `npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"`
 3. Add to React Router: `<Route path="/sign-in" element={<CredentialLoginPage />} />`
 4. Use TanStack Query for auth state management
 5. Configure protected routes with loader functions
@@ -363,7 +363,7 @@ export function CredentialLoginNext() {
 ## Installation
 
 1. Install better-auth and configure client
-2. Install block: `npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"`
+2. Install block: `npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"`
 3. Create route: `routes/auth/sign-in.tsx`
 4. Use TanStack Router's navigation hooks
 5. Configure route guards with beforeLoad
@@ -384,7 +384,7 @@ export function CredentialLoginNext() {
 
 ## 6. NPM Package Architecture
 
-### Decision: Separate `@better-auth-ui/components` package with prop-based configuration
+### Decision: Separate `@imbios/ui` package with prop-based configuration
 
 **Rationale**: Developers want both options: copy/paste (shadcn CLI) for full control, or managed package for easy updates.
 
@@ -450,7 +450,7 @@ export interface CredentialLoginProps {
 
 ```json
 {
-  "name": "@better-auth-ui/components",
+  "name": "@imbios/ui",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",

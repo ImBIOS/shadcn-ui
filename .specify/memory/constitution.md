@@ -12,7 +12,7 @@ Sync Impact Report:
 - Follow-up: None - all placeholders filled
 -->
 
-# better-auth-ui Constitution
+# ImBIOS UI Constitution
 
 ## Core Principles
 

@@ -1,12 +1,12 @@
 {
-  "name": "@better-auth-ui/registry",
+  "name": "@imbios/ui-registry",
   "version": "0.1.0",
   "items": [
     {
       "name": "credential-login",
       "type": "registry:block",
       "description": "A credential-based login form with email/username/phone support, powered by better-auth",
-      "url": "https://better-auth-ui.com/r/credential-login.json"
+      "url": "https://ui.imbios.dev/r/credential-login.json"
     }
   ]
 }

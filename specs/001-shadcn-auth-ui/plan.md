@@ -88,7 +88,7 @@ specs/[###-feature]/
 ### Source Code (repository root)
 
 ```text
-better-auth-ui/
+ImBIOS UI/
 ├── apps/
 │   └── web/                          # Documentation site with builder UI
 │       ├── src/

@@ -1,4 +1,4 @@
-# better-auth-ui Development Guidelines
+# ImBIOS UI Development Guidelines
 
 Auto-generated from all feature plans. Last updated: 2025-11-26
 
@@ -9,14 +9,30 @@ Auto-generated from all feature plans. Last updated: 2025-11-26
 ## Project Structure
 
 ```text
-backend/
-frontend/
-tests/
+ImBIOS UI/
+├── apps/
+│   └── web/                  # Documentation site + builder UI
+│       ├── content/docs/     # MDX documentation
+│       ├── src/
+│       │   ├── components/   # Site components
+│       │   ├── routes/       # TanStack Start routes
+│       │   └── registry/     # Static registry JSON files
+│       └── tests/            # E2E and integration tests
+├── packages/
+│   ├── ui/                   # NPM package (@imbios/ui)
+│   │   ├── src/
+│   │   │   ├── components/   # Auth components
+│   │   │   ├── lib/          # Validation utilities
+│   │   │   └── locales/      # i18n translations
+│   │   └── tests/            # Unit and integration tests
+│   ├── api/                  # API utilities
+│   └── config/               # Shared configuration
+└── specs/                    # Feature specifications
 ```
 
 ## Commands
 
-npm test && npm run lint
+pnpm test && pnpm run check
 
 ## Code Style
 

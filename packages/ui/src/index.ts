@@ -1,9 +1,9 @@
 /**
- * @better-auth-ui/components
+ * @imbios/ui
  *
  * Beautifully designed authentication UI components for better-auth
  *
- * @module @better-auth-ui/components
+ * @module @imbios/ui
  * @version 0.1.0
  */
 

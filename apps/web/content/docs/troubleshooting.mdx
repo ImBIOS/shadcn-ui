@@ -1,26 +1,26 @@
 ---
 title: Troubleshooting
-description: Common issues and solutions for better-auth UI
+description: Common issues and solutions for ImBIOS UI
 icon: Bug
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Callout } from "fumadocs-ui/components/callout";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 # Troubleshooting
 
-Common issues and their solutions when using better-auth UI components.
+Common issues and their solutions when using ImBIOS UI components.
 
 ## Installation Issues
 
-### Module not found: Can't resolve '@better-auth-ui/components'
+### Module not found: Can't resolve '@imbios/ui'
 
 **Cause**: Package not installed.
 
 **Solution**:
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 ### Module not found: Can't resolve '@/components/auth/credential-login-form'
@@ -30,8 +30,9 @@ pnpm add @better-auth-ui/components
 **Solution**:
 
 1. Re-run the installation:
+
    ```bash
-   npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+   npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
    ```
 
 2. Verify your `tsconfig.json` has the path alias:
@@ -64,22 +65,21 @@ pnpm add better-auth@^1.4.0 react@^19.0.0 react-dom@^19.0.0
 **Solution**:
 
 1. Create the auth client:
+
    ```typescript title="lib/auth-client.ts"
-   import { createAuthClient } from 'better-auth/client'
+   import { createAuthClient } from "better-auth/client";
 
    export const authClient = createAuthClient({
-     baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
-   })
+     baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+   });
    ```
 
 2. Import and pass to component:
-   ```tsx
-   import { authClient } from '@/lib/auth-client'
 
-   <CredentialLoginForm
-     authMethod="email"
-     authClient={authClient}
-   />
+   ```tsx
+   import { authClient } from "@/lib/auth-client";
+
+   <CredentialLoginForm authMethod="email" authClient={authClient} />;
    ```
 
 ### "Network error" when submitting form
@@ -99,6 +99,7 @@ pnpm add better-auth@^1.4.0 react@^19.0.0 react-dom@^19.0.0
 
     export const { GET, POST } = auth.handler
     ```
+
   </Tab>
   <Tab value="Vite">
     ```typescript title="vite.config.ts"
@@ -121,6 +122,7 @@ pnpm add better-auth@^1.4.0 react@^19.0.0 react-dom@^19.0.0
       POST: auth.handler,
     })
     ```
+
   </Tab>
 </Tabs>
 
@@ -145,8 +147,8 @@ pnpm add better-auth@^1.4.0 react@^19.0.0 react-dom@^19.0.0
   authMethod="email"
   authClient={authClient}
   onError={(error) => {
-    if (error.code === 'TWO_FACTOR_REQUIRED') {
-      router.push('/auth/two-factor')
+    if (error.code === "TWO_FACTOR_REQUIRED") {
+      router.push("/auth/two-factor");
     }
   }}
 />
@@ -166,13 +168,13 @@ Update `tailwind.config.js`:
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
     // For npm package
-    './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
+    "./node_modules/@imbios/ui/**/*.{js,ts,jsx,tsx}",
   ],
   // ...
-}
+};
 ```
 
 ### Dark mode not working
@@ -182,24 +184,25 @@ export default {
 **Solution**:
 
 1. Ensure you have a theme provider:
+
    ```tsx title="app/providers.tsx"
-   import { ThemeProvider } from 'next-themes'
+   import { ThemeProvider } from "next-themes";
 
    export function Providers({ children }) {
      return (
        <ThemeProvider attribute="class" defaultTheme="system">
          {children}
        </ThemeProvider>
-     )
+     );
    }
    ```
 
 2. Add `darkMode: 'class'` to Tailwind config:
    ```javascript
    export default {
-     darkMode: 'class',
+     darkMode: "class",
      // ...
-   }
+   };
    ```
 
 ### Custom classNames not overriding defaults
@@ -215,7 +218,7 @@ Use the `classNames` prop with more specific selectors or `!important`:
   authMethod="email"
   authClient={authClient}
   classNames={{
-    button: '!bg-blue-600 !hover:bg-blue-700',
+    button: "!bg-blue-600 !hover:bg-blue-700",
   }}
 />
 ```
@@ -251,14 +254,14 @@ pnpm add better-auth@^1.4.0
 Import from the correct path:
 
 ```typescript
-import { createAuthClient } from 'better-auth/client'
+import { createAuthClient } from "better-auth/client";
 ```
 
 Not:
 
 ```typescript
 // Wrong
-import { createAuthClient } from 'better-auth'
+import { createAuthClient } from "better-auth";
 ```
 
 ## Validation Issues
@@ -288,9 +291,9 @@ export const auth = betterAuth({
     password: {
       minLength: 12,
       // Match client rules
-    }
+    },
   },
-})
+});
 ```
 
 ### Email validation too strict/loose
@@ -302,10 +305,12 @@ export const auth = betterAuth({
 For shadcn CLI installations, modify the validation schema:
 
 ```typescript title="components/auth/credential-login-form.tsx"
-const emailSchema = z.string().email().refine(
-  (email) => email.endsWith('@company.com'),
-  { message: 'Only company emails allowed' }
-)
+const emailSchema = z
+  .string()
+  .email()
+  .refine((email) => email.endsWith("@company.com"), {
+    message: "Only company emails allowed",
+  });
 ```
 
 ## Performance Issues
@@ -317,6 +322,7 @@ const emailSchema = z.string().email().refine(
 **Solution**:
 
 1. Memoize callbacks:
+
    ```tsx
    const handleSuccess = useCallback(() => {
      router.push('/dashboard')
@@ -343,9 +349,10 @@ const emailSchema = z.string().email().refine(
 **Solution**:
 
 1. Import only what you need:
+
    ```tsx
    // Good
-   import { CredentialLoginForm } from '@better-auth-ui/components'
+   import { CredentialLoginForm } from "@imbios/ui";
 
    // Avoid importing the entire package
    ```
@@ -392,13 +399,10 @@ Ensure focus styles are visible:
 <Callout type="info">
   If you're still experiencing problems:
 
-  1. Check the [GitHub Issues](https://github.com/better-auth-ui/better-auth-ui/issues)
-  2. Search existing discussions
-  3. Open a new issue with:
-     - Error message and stack trace
-     - Package versions (`pnpm list better-auth @better-auth-ui/components`)
-     - Reproduction steps
-     - Framework and Node.js version
+1. Check the [GitHub Issues](https://github.com/ImBIOS/ui/issues)
+2. Search existing discussions
+3. Open a new issue with: - Error message and stack trace - Package versions (`pnpm list better-auth @imbios/ui`) - Reproduction steps - Framework and Node.js version
+
 </Callout>
 
 ## Related
@@ -406,4 +410,3 @@ Ensure focus styles are visible:
 - [Getting Started](/docs/getting-started)
 - [Installation Guides](/docs/installation)
 - [API Reference](/docs/components/credential-login)
-

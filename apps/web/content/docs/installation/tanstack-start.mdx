@@ -1,11 +1,11 @@
 ---
 title: TanStack Start Installation
-description: Set up better-auth-ui with TanStack Start
+description: Set up ImBIOS UI with TanStack Start
 ---
 
 # TanStack Start Installation
 
-This guide covers installing better-auth-ui in a TanStack Start project with file-based routing.
+This guide covers installing ImBIOS UI in a TanStack Start project with file-based routing.
 
 ## Prerequisites
 
@@ -64,20 +64,20 @@ export const APIRoute = createAPIFileRoute('/api/auth/$')({
 ### Option A: shadcn CLI
 
 ```bash
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 ```
 
 ### Option B: NPM Package
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 ## Step 6: Create Sign-In Route
 
 ```tsx title="app/routes/auth/sign-in.tsx"
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 // or: import { CredentialLoginForm } from '@/components/auth/credential-login-form'
 import { authClient } from '@/lib/auth-client'
 
@@ -143,7 +143,7 @@ export default {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     // For NPM package:
-    './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@imbios/ui/**/*.{js,ts,jsx,tsx}',
   ],
   // ...
 }

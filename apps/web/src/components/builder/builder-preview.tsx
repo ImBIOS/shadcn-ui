@@ -4,7 +4,7 @@
  * Live preview panel for the credential login builder UI.
  * Shows a real-time preview of the form based on configuration.
  *
- * @module @better-auth-ui/web/builder
+ * @module @imbios/ui-web/builder
  * Task: T064 [US2] Create builder-preview.tsx live preview panel
  */
 

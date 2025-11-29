@@ -6,7 +6,7 @@
 
 ## Overview
 
-This directory contains API contracts and type definitions for the better-auth-ui library. These contracts define the interfaces between:
+This directory contains API contracts and type definitions for the ImBIOS UI library. These contracts define the interfaces between:
 
 1. **Registry System** ↔ **shadcn CLI** (JSON Schema)
 2. **NPM Package Components** ↔ **Application Code** (TypeScript Interfaces)
@@ -68,7 +68,7 @@ pnpm dlx ajv-cli validate -s registry-item.schema.json -d ../apps/web/src/regist
 
 ### 2. `component-props.ts`
 
-**Purpose**: TypeScript interfaces for `@better-auth-ui/components` NPM package
+**Purpose**: TypeScript interfaces for `@imbios/ui` NPM package
 
 **Usage**:
 
@@ -81,7 +81,7 @@ pnpm dlx ajv-cli validate -s registry-item.schema.json -d ../apps/web/src/regist
 #### Component Props
 
 ```typescript
-import type { CredentialLoginFormProps } from '@better-auth-ui/components'
+import type { CredentialLoginFormProps } from '@imbios/ui'
 
 // Main component props interface
 <CredentialLoginForm
@@ -95,7 +95,7 @@ import type { CredentialLoginFormProps } from '@better-auth-ui/components'
 #### Error Handling
 
 ```typescript
-import type { AuthError, AuthErrorCode } from '@better-auth-ui/components'
+import type { AuthError, AuthErrorCode } from '@imbios/ui'
 
 // Handle authentication errors
 onError={(error: AuthError) => {
@@ -106,7 +106,7 @@ onError={(error: AuthError) => {
 #### Validation
 
 ```typescript
-import type { PasswordValidation } from '@better-auth-ui/components'
+import type { PasswordValidation } from '@imbios/ui'
 
 // Configure password validation
 passwordValidation={{
@@ -120,7 +120,7 @@ passwordValidation={{
 #### Registry Types
 
 ```typescript
-import type { RegistryItem, RegistryFile } from '@better-auth-ui/components'
+import type { RegistryItem, RegistryFile } from '@imbios/ui'
 
 // Used internally by docs site and CLI integration
 ```

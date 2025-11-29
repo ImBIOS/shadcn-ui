@@ -4,7 +4,7 @@ import { TanStackStart } from "alchemy/cloudflare";
 
 config({ path: "./.env" });
 
-const app = await alchemy("better-auth-ui-web");
+const app = await alchemy("ui");
 
 export const web = await TanStackStart("web", {
   bindings: {

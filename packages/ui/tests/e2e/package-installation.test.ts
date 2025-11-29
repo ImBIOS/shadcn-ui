@@ -31,7 +31,7 @@ describe("E2E: Package Installation Methods", () => {
         cwd: PACKAGE_ROOT,
         encoding: "utf-8",
       });
-      expect(result).toContain("better-auth-ui-components");
+      expect(result).toContain("@imbios/ui");
     });
 
     it("package.json has all required fields for publishing", () => {
@@ -39,7 +39,7 @@ describe("E2E: Package Installation Methods", () => {
       const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
 
       // Required fields
-      expect(pkg.name).toBe("@better-auth-ui/components");
+      expect(pkg.name).toBe("@imbios/ui");
       expect(pkg.version).toBeDefined();
       expect(pkg.main).toBeDefined();
       expect(pkg.module).toBeDefined();

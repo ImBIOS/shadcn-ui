@@ -1,4 +1,4 @@
-# Quickstart Guide: better-auth-ui
+# Quickstart Guide: ImBIOS UI
 
 **Target Audience**: Developers integrating authentication UI into their applications
 **Time to Complete**: ~15-30 minutes
@@ -50,7 +50,7 @@ export const authClient = createAuthClient({
 #### Option A: shadcn CLI (Recommended for customization)
 
 ```bash
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 ```
 
 This copies the component source code into your project. You can customize it freely.
@@ -58,7 +58,7 @@ This copies the component source code into your project. You can customize it fr
 #### Option B: NPM Package (Recommended for managed updates)
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 This installs a pre-built component that updates automatically with your dependencies.
@@ -87,7 +87,7 @@ export default function SignInPage() {
 
 ```tsx
 // app/auth/sign-in/page.tsx
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 
 export default function SignInPage() {
@@ -200,7 +200,7 @@ export const { GET, POST } = auth.handler
 
 | Feature | shadcn CLI | NPM Package |
 |---------|------------|-------------|
-| **Installation** | `npx shadcn add "URL"` | `pnpm add @better-auth-ui/components` |
+| **Installation** | `npx shadcn add "URL"` | `pnpm add @imbios/ui` |
 | **Source Code** | Copied to your project | Installed as dependency |
 | **Customization** | ✅ Full control | ⚠️ Limited to props |
 | **Updates** | Manual (re-run CLI) | ✅ Automatic (pnpm update) |
@@ -223,7 +223,7 @@ Follow the prompts to configure your project.
 ### Step 2: Add Credential Login Block
 
 ```bash
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 ```
 
 This installs:
@@ -275,7 +275,7 @@ export function CredentialLoginForm({ authClient }: CredentialLoginFormProps) {
 ### Step 1: Install Package
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 ### Step 2: Install Peer Dependencies (if not already installed)
@@ -287,7 +287,7 @@ pnpm add better-auth@^1.4.0 react@^19.0.0 react-dom@^19.0.0
 ### Step 3: Import and Use with Props
 
 ```tsx
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 
@@ -534,7 +534,7 @@ app/
 // app/auth/sign-in/page.tsx
 'use client'
 
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 
@@ -603,7 +603,7 @@ src/
 
 ```tsx
 // src/routes/auth/sign-in.tsx
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 import { useNavigate } from 'react-router-dom'
 
@@ -678,7 +678,7 @@ app/
 ```tsx
 // app/routes/auth/sign-in.tsx
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/auth/sign-in')({
@@ -784,12 +784,12 @@ interface CredentialLoginFormProps {
 
 ### Common Issues
 
-#### 1. "Module not found: Can't resolve '@better-auth-ui/components'"
+#### 1. "Module not found: Can't resolve '@imbios/ui'"
 
 **Solution**: Install the package:
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 #### 2. "authClient is undefined"
@@ -820,7 +820,7 @@ export const authClient = createAuthClient({
 content: [
   './app/**/*.{js,ts,jsx,tsx}',
   './components/**/*.{js,ts,jsx,tsx}',
-  './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}', // For NPM package
+  './node_modules/@imbios/ui/**/*.{js,ts,jsx,tsx}', // For NPM package
 ],
 ```
 
@@ -859,9 +859,9 @@ After completing this quickstart:
 
 ## Support
 
-- **GitHub Issues**: [better-auth-ui/better-auth-ui/issues](https://github.com/better-auth-ui/better-auth-ui/issues)
+- **GitHub Issues**: [ImBIOS/ui/issues](https://github.com/ImBIOS/ui/issues)
 - **Discord Community**: [Join Discord](https://discord.gg/better-auth)
-- **Email**: support@better-auth-ui.com
+- **Email**: support@ui.imbios.dev
 
 ---
 

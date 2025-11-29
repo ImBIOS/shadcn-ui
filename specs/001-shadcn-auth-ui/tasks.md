@@ -266,7 +266,7 @@
 - [X] T111 [P] Update root README.md with project overview and installation instructions
 - [X] T112 [P] Create apps/web/content/docs/contributing.mdx with development setup guide
 - [X] T113 [P] Create apps/web/content/docs/accessibility.mdx documenting WCAG 2.1 AA compliance
-- [X] T114 [P] Create apps/web/content/docs/migration.mdx for future users upgrading from old better-auth-ui
+- [X] T114 [P] Create apps/web/content/docs/migration.mdx for future users upgrading from old ImBIOS UI
 
 ### Performance Optimization
 

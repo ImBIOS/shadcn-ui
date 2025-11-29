@@ -2,7 +2,7 @@
 
 Beautiful, accessible authentication components for [better-auth](https://better-auth.com). Install via shadcn CLI or npm package.
 
-[![npm version](https://img.shields.io/npm/v/@better-auth-ui/components.svg)](https://www.npmjs.com/package/@better-auth-ui/components)
+[![npm version](https://img.shields.io/npm/v/@imbios/ui.svg)](https://www.npmjs.com/package/@imbios/ui)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Features
@@ -21,7 +21,7 @@ Choose your preferred installation method:
 ### Option A: shadcn CLI (Recommended for customization)
 
 ```bash
-npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+npx shadcn@latest add "https://ui.imbios.dev/r/credential-login"
 ```
 
 This copies the component source code into your project for full customization.
@@ -29,7 +29,7 @@ This copies the component source code into your project for full customization.
 ### Option B: npm Package (Recommended for managed updates)
 
 ```bash
-pnpm add @better-auth-ui/components
+pnpm add @imbios/ui
 ```
 
 This installs a pre-built component that updates automatically.
@@ -53,7 +53,7 @@ export const authClient = createAuthClient({
 // app/auth/sign-in/page.tsx
 'use client'
 
-import { CredentialLoginForm } from '@better-auth-ui/components'
+import { CredentialLoginForm } from '@imbios/ui'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 
@@ -92,22 +92,22 @@ export default function SignInPage() {
 - **React (Vite)** - With React Router
 - **TanStack Start** - Full-stack React framework
 
-See [framework-specific guides](https://better-auth-ui.com/docs/installation) for detailed setup instructions.
+See [framework-specific guides](https://ui.imbios.dev/docs/installation) for detailed setup instructions.
 
 ## Documentation
 
-📚 **[Full Documentation](https://better-auth-ui.com/docs)**
+📚 **[Full Documentation](https://ui.imbios.dev/docs)**
 
-- [Getting Started](https://better-auth-ui.com/docs/getting-started)
-- [Installation Guides](https://better-auth-ui.com/docs/installation)
-- [API Reference](https://better-auth-ui.com/docs/components/credential-login)
-- [Configuration](https://better-auth-ui.com/docs/configuration/authentication)
-- [Troubleshooting](https://better-auth-ui.com/docs/troubleshooting)
+- [Getting Started](https://ui.imbios.dev/docs/getting-started)
+- [Installation Guides](https://ui.imbios.dev/docs/installation)
+- [API Reference](https://ui.imbios.dev/docs/components/credential-login)
+- [Configuration](https://ui.imbios.dev/docs/configuration/authentication)
+- [Troubleshooting](https://ui.imbios.dev/docs/troubleshooting)
 
 ## Project Structure
 
 ```
-better-auth-ui/
+ImBIOS UI/
 ├── apps/
 │   └── web/                  # Documentation site + builder UI
 │       ├── content/docs/     # MDX documentation
@@ -117,7 +117,7 @@ better-auth-ui/
 │       │   └── registry/     # Static registry JSON files
 │       └── tests/            # E2E and integration tests
 ├── packages/
-│   ├── ui/                   # NPM package (@better-auth-ui/components)
+│   ├── ui/                   # NPM package (@imbios/ui)
 │   │   ├── src/
 │   │   │   ├── components/   # Auth components
 │   │   │   ├── lib/          # Validation utilities
@@ -165,18 +165,18 @@ open http://localhost:3001
 pnpm nx graph
 
 # Run specific target
-pnpm nx run @better-auth-ui/components:build
+pnpm nx run @imbios/ui:build
 
 # Build affected projects
 pnpm nx affected -t build
 
 # Run tests for a package
-pnpm nx run @better-auth-ui/components:test
+pnpm nx run @imbios/ui:test
 ```
 
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](https://better-auth-ui.com/docs/contributing) for details.
+Contributions are welcome! Please read our [Contributing Guide](https://ui.imbios.dev/docs/contributing) for details.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -189,7 +189,7 @@ Contributions are welcome! Please read our [Contributing Guide](https://better-a
 
 ## License
 
-MIT © [better-auth-ui](https://github.com/better-auth-ui)
+MIT © [ImBIOS UI](https://github.com/ImBIOS UI)
 
 ## Related Projects
 

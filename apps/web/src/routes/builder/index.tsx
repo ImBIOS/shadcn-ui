@@ -3,7 +3,7 @@
  *
  * TanStack Start route for the credential login builder UI.
  *
- * @module @better-auth-ui/web/routes/builder
+ * @module @imbios/ui-web/routes/builder
  * Task: T061 [US2] Create builder route apps/web/src/routes/builder/$.tsx
  */
 

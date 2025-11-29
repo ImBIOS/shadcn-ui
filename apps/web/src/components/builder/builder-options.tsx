@@ -4,7 +4,7 @@
  * Configuration sidebar for the credential login builder UI.
  * Allows users to toggle auth methods and features.
  *
- * @module @better-auth-ui/web/builder
+ * @module @imbios/ui-web/builder
  * Task: T063 [US2] Create builder-options.tsx configuration sidebar
  */
 

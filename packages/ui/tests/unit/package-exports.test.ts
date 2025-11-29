@@ -1,7 +1,7 @@
 /**
  * T078 [US3] Unit test for NPM package exports
  *
- * Validates that all public exports from @better-auth-ui/components
+ * Validates that all public exports from @imbios/ui
  * are correctly exported and accessible.
  */
 import { describe, expect, it } from "vitest";

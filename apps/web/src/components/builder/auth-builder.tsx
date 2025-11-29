@@ -4,7 +4,7 @@
  * Main container component for the credential login builder UI.
  * Combines options sidebar, live preview, and installation instructions.
  *
- * @module @better-auth-ui/web/builder
+ * @module @imbios/ui-web/builder
  * Task: T062 [US2] Create auth-builder.tsx main container component
  */
 

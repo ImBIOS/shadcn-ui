@@ -1,6 +1,6 @@
 /**
  * Performance monitoring utilities using web-vitals
- * @module @better-auth-ui/components/performance
+ * @module @imbios/ui/performance
  */
 
 import type { Metric, ReportOpts } from "web-vitals";
@@ -51,7 +51,7 @@ const defaultHandler: PerformanceReportHandler = (metric) => {
  *
  * @example
  * ```tsx
- * import { initPerformanceTracking } from '@better-auth-ui/components'
+ * import { initPerformanceTracking } from '@imbios/ui'
  *
  * // Basic usage
  * initPerformanceTracking()
@@ -95,7 +95,7 @@ export function initPerformanceTracking(
  *
  * @example
  * ```tsx
- * import { trackCustomMetric } from '@better-auth-ui/components'
+ * import { trackCustomMetric } from '@imbios/ui'
  *
  * // Track form submission time
  * const startTime = performance.now()
