@@ -27,8 +27,14 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "analyze": "tsup && pnpm dlx esbuild-visualizer --metadata ./dist/metafile.json --open",
-    "size": "tsup && pnpm dlx size-limit"
+    "size": "tsup && pnpm exec size-limit"
   },
+  "size-limit": [
+    {
+      "path": "dist/index.mjs",
+      "import": "{ CredentialLoginForm }"
+    }
+  ],
   "keywords": [
     "better-auth",
     "authentication",
@@ -77,6 +83,7 @@
   "devDependencies": {
     "@axe-core/react": "^4.11.0",
     "@imbios/ui-config": "workspace:*",
+    "@size-limit/preset-big-lib": "^12.0.0",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.5.2",
@@ -85,6 +92,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "@vitest/coverage-v8": "^3.1.1",
     "jsdom": "^26.0.0",
+    "size-limit": "^12.0.0",
     "tsup": "^8.5.1",
     "typescript": "^5.7.2",
     "vite": "^7.0.2",
