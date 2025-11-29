@@ -1,0 +1,30 @@
+# better-auth-ui Development Guidelines
+
+Auto-generated from all feature plans. Last updated: 2025-11-26
+
+## Active Technologies
+
+- TypeScript 5.7.2+ with ESNext target, strict mode enabled + React 19, TanStack Start 1.x, Vite 7, Fumadocs 16.x, Radix UI, Biome 2.3.7, better-auth 1.4+ (001-shadcn-auth-ui)
+
+## Project Structure
+
+```text
+backend/
+frontend/
+tests/
+```
+
+## Commands
+
+npm test && npm run lint
+
+## Code Style
+
+TypeScript 5.7.2+ with ESNext target, strict mode enabled: Follow standard conventions
+
+## Recent Changes
+
+- 001-shadcn-auth-ui: Added TypeScript 5.7.2+ with ESNext target, strict mode enabled + React 19, TanStack Start 1.x, Vite 7, Fumadocs 16.x, Radix UI, Biome 2.3.7, better-auth 1.4+
+
+<!-- MANUAL ADDITIONS START -->
+<!-- MANUAL ADDITIONS END -->

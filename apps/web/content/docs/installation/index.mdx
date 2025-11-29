@@ -1,0 +1,110 @@
+---
+title: Installation
+description: Choose the right installation method and framework for your project
+---
+
+# Installation
+
+better-auth-ui components can be installed using two methods, each with its own advantages. Choose the method that best fits your workflow.
+
+## Installation Methods
+
+| Method          | Command                               | Best For                                  |
+| --------------- | ------------------------------------- | ----------------------------------------- |
+| **shadcn CLI**  | `npx shadcn@latest add "URL"`         | Full customization, source code ownership |
+| **NPM Package** | `pnpm add @better-auth-ui/components` | Managed updates, quick setup              |
+
+### shadcn CLI (Recommended for Customization)
+
+Copy the component source code directly into your project. You own the code and can customize everything.
+
+```bash
+npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+```
+
+**Pros:**
+
+- Full control over styling and behavior
+- No external dependencies to update
+- Easy to modify for specific needs
+
+**Cons:**
+
+- Manual updates when upstream changes
+- Larger initial setup
+
+### NPM Package (Recommended for Quick Setup)
+
+Install as a dependency with automatic updates via your package manager.
+
+```bash
+pnpm add @better-auth-ui/components
+```
+
+**Pros:**
+
+- Quick setup (under 5 minutes)
+- Automatic updates with `pnpm update`
+- Smaller bundle size (tree-shaking)
+
+**Cons:**
+
+- Limited customization (prop-based only)
+- External dependency
+
+## Framework Guides
+
+Choose your framework for detailed setup instructions:
+
+<Cards>
+  <Card title="Next.js" href="/docs/installation/nextjs">
+    App Router setup with middleware for route protection
+  </Card>
+  <Card title="React (Vite)" href="/docs/installation/vite">
+    React Router integration with loader-based auth guards
+  </Card>
+  <Card title="TanStack Start" href="/docs/installation/tanstack-start">
+    File-based routing with beforeLoad protection
+  </Card>
+</Cards>
+
+## Prerequisites
+
+Before installing, ensure you have:
+
+- **Node.js 18+**
+- **React 18+** or **React 19+**
+- **Tailwind CSS** configured
+- **better-auth 1.4+** installed and configured
+
+## Quick Start
+
+Already have better-auth configured? Jump straight to installation:
+
+```bash
+# Option 1: shadcn CLI
+npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+
+# Option 2: NPM Package
+pnpm add @better-auth-ui/components
+```
+
+Then import and use:
+
+```tsx
+import { CredentialLoginForm } from "@better-auth-ui/components";
+// or: import { CredentialLoginForm } from '@/components/auth/credential-login-form'
+
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  showRememberMe={true}
+  onSuccess={() => router.push("/dashboard")}
+/>;
+```
+
+## Next Steps
+
+1. [Set up better-auth](/docs/installation/nextjs#configure-better-auth)
+2. [Create your sign-in page](/docs/examples/nextjs-example)
+3. [Protect your routes](/docs/guides/nextjs-middleware)

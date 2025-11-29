@@ -1,0 +1,289 @@
+---
+title: Authentication Methods
+description: Configure email, username, or phone authentication
+icon: UserCheck
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Authentication Methods
+
+The `CredentialLoginForm` supports three authentication methods. Choose the one that best fits your application's needs.
+
+## Email Authentication
+
+The default and most common method. Users sign in with their email address and password.
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+/>
+```
+
+### Validation
+
+Email addresses are validated against RFC 5322 standards:
+
+```typescript
+// Valid examples
+"user@example.com"
+"user.name@example.co.uk"
+"user+tag@example.com"
+
+// Invalid examples
+"user@"
+"@example.com"
+"user@example"
+```
+
+### Server Configuration
+
+Ensure your better-auth server has email authentication enabled:
+
+```typescript title="lib/auth.ts"
+import { betterAuth } from 'better-auth'
+
+export const auth = betterAuth({
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false, // Set to true in production
+  },
+})
+```
+
+## Username Authentication
+
+For applications where email addresses aren't required or desired.
+
+```tsx
+<CredentialLoginForm
+  authMethod="username"
+  authClient={authClient}
+/>
+```
+
+### Validation Rules
+
+Usernames must follow these rules:
+
+- 3-30 characters
+- Letters, numbers, hyphens, and underscores only
+- No spaces or special characters
+
+```typescript
+// Valid examples
+"johndoe"
+"john_doe"
+"john-doe-123"
+
+// Invalid examples
+"ab"                // Too short
+"john doe"          // Contains space
+"john@doe"          // Contains special character
+"this_is_a_very_long_username_that_exceeds_limit" // Too long
+```
+
+### Server Configuration
+
+Enable username authentication in your better-auth config:
+
+```typescript title="lib/auth.ts"
+import { betterAuth } from 'better-auth'
+
+export const auth = betterAuth({
+  emailAndPassword: {
+    enabled: true,
+  },
+  // Enable username support
+  user: {
+    additionalFields: {
+      username: {
+        type: 'string',
+        unique: true,
+        required: false,
+      }
+    }
+  }
+})
+```
+
+## Phone Authentication
+
+For SMS-based or phone-first applications.
+
+```tsx
+<CredentialLoginForm
+  authMethod="phone"
+  authClient={authClient}
+/>
+```
+
+### Validation
+
+Phone numbers must be in E.164 format:
+
+```typescript
+// Valid examples
+"+12025551234"
+"+442071234567"
+"+819012345678"
+
+// Invalid examples
+"2025551234"        // Missing +
+"555-1234"          // Local format
+"+1 (202) 555-1234" // Contains spaces/formatting
+```
+
+<Callout type="info">
+  The form automatically validates phone number format. Users can enter numbers with or without the country code prefix.
+</Callout>
+
+### Server Configuration
+
+Phone authentication requires additional setup:
+
+```typescript title="lib/auth.ts"
+import { betterAuth } from 'better-auth'
+
+export const auth = betterAuth({
+  // Enable phone authentication
+  phoneNumber: {
+    enabled: true,
+    sendOTP: async ({ phoneNumber }) => {
+      // Integrate with your SMS provider (Twilio, etc.)
+      await twilioClient.messages.create({
+        to: phoneNumber,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        body: `Your verification code is: ${otp}`,
+      })
+    },
+  },
+})
+```
+
+## Switching Methods Dynamically
+
+You can let users choose their preferred authentication method:
+
+```tsx
+import { useState } from 'react'
+
+type AuthMethod = 'email' | 'username' | 'phone'
+
+export function FlexibleSignIn() {
+  const [method, setMethod] = useState<AuthMethod>('email')
+
+  return (
+    <div>
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={() => setMethod('email')}
+          className={method === 'email' ? 'active' : ''}
+        >
+          Email
+        </button>
+        <button
+          onClick={() => setMethod('username')}
+          className={method === 'username' ? 'active' : ''}
+        >
+          Username
+        </button>
+        <button
+          onClick={() => setMethod('phone')}
+          className={method === 'phone' ? 'active' : ''}
+        >
+          Phone
+        </button>
+      </div>
+
+      <CredentialLoginForm
+        authMethod={method}
+        authClient={authClient}
+        onSuccess={() => router.push('/dashboard')}
+      />
+    </div>
+  )
+}
+```
+
+## Remember Me
+
+Enable the "Remember me" checkbox to extend session duration:
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  showRememberMe
+/>
+```
+
+When checked, the session will have an extended expiry time (configured in your better-auth server).
+
+### Server Configuration
+
+```typescript title="lib/auth.ts"
+export const auth = betterAuth({
+  session: {
+    expiresIn: 60 * 60 * 24, // 24 hours default
+    rememberMeExpiresIn: 60 * 60 * 24 * 30, // 30 days when "remember me" checked
+  },
+})
+```
+
+## Forgot Password
+
+Enable the "Forgot password?" link:
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  showForgotPassword
+  forgotPasswordUrl="/auth/forgot-password"
+/>
+```
+
+<Callout type="warn">
+  You need to implement the forgot password page separately. The component only provides the link.
+</Callout>
+
+## Two-Factor Authentication
+
+The component handles 2FA redirects automatically:
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  onError={(error) => {
+    if (error.code === 'TWO_FACTOR_REQUIRED') {
+      // Automatic redirect or handle manually
+      router.push('/auth/two-factor')
+    }
+  }}
+/>
+```
+
+When better-auth returns `twoFactorRedirect: true`, the `onError` callback receives a `TWO_FACTOR_REQUIRED` error, allowing you to redirect to your 2FA verification page.
+
+## Best Practices
+
+1. **Use email for most applications** - It's universally understood and provides a recovery mechanism.
+
+2. **Username is great for gaming/social apps** - Where anonymity is valued.
+
+3. **Phone works well for mobile-first apps** - Especially in regions where SMS is dominant.
+
+4. **Always enable "forgot password"** - Users forget passwords; make recovery easy.
+
+5. **Consider "remember me" carefully** - It's convenient but may be a security risk on shared devices.
+
+## Related
+
+- [Password Validation](/docs/configuration/validation)
+- [CredentialLoginForm API](/docs/components/credential-login)
+- [Troubleshooting](/docs/troubleshooting)
+

@@ -1,0 +1,343 @@
+---
+title: Contributing
+description: How to contribute to better-auth UI
+icon: GitPullRequest
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Contributing
+
+Thank you for your interest in contributing to better-auth UI! This guide will help you get started.
+
+## Code of Conduct
+
+By participating in this project, you agree to abide by our Code of Conduct. Please be respectful and constructive in all interactions.
+
+## Getting Started
+
+<Steps>
+  <Step>
+    ### Fork and clone the repository
+
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/better-auth-ui.git
+    cd better-auth-ui
+    ```
+  </Step>
+
+  <Step>
+    ### Install dependencies
+
+    ```bash
+    pnpm install
+    ```
+
+    <Callout type="info">
+      We use pnpm for package management. Please don't use npm or yarn.
+    </Callout>
+  </Step>
+
+  <Step>
+    ### Create a feature branch
+
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+  </Step>
+
+  <Step>
+    ### Start development server
+
+    ```bash
+    pnpm run dev
+    ```
+
+    The documentation site will be available at http://localhost:3001
+  </Step>
+</Steps>
+
+## Project Structure
+
+```
+better-auth-ui/
+├── apps/
+│   └── web/                  # Documentation site
+│       ├── content/docs/     # MDX documentation
+│       ├── src/
+│       │   ├── components/   # Site components
+│       │   ├── routes/       # TanStack Start routes
+│       │   └── registry/     # Static registry JSON
+│       └── tests/            # Tests
+├── packages/
+│   ├── ui/                   # NPM package
+│   │   ├── src/
+│   │   │   ├── components/   # Auth components
+│   │   │   ├── lib/          # Utilities
+│   │   │   └── locales/      # i18n
+│   │   └── tests/
+│   ├── api/                  # API utilities
+│   └── config/               # Shared config
+└── specs/                    # Feature specs
+```
+
+## Development Workflow
+
+### 1. Make your changes
+
+- Write code following our [code style](#code-style)
+- Follow TDD: write tests first, then implementation
+- Keep components accessible (WCAG 2.1 AA)
+
+### 2. Run tests
+
+```bash
+# Run all tests
+pnpm run test
+
+# Run tests for specific package
+pnpm nx run @better-auth-ui/components:test
+
+# Run tests in watch mode
+pnpm nx run @better-auth-ui/components:test -- --watch
+```
+
+### 3. Run linting and type checking
+
+```bash
+# Format and lint
+pnpm run check
+
+# Type checking
+pnpm run check-types
+```
+
+### 4. Commit your changes
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```bash
+# Format: <type>(<scope>): <description>
+
+# Examples:
+git commit -m "feat(ui): add phone authentication support"
+git commit -m "fix(ui): resolve focus trap issue in login form"
+git commit -m "docs: update installation guide"
+git commit -m "test(ui): add unit tests for password validation"
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `test`: Adding or updating tests
+- `refactor`: Code refactoring
+- `style`: Formatting, missing semicolons, etc.
+- `chore`: Maintenance tasks
+- `perf`: Performance improvements
+
+### 5. Push and create a Pull Request
+
+```bash
+git push origin feature/your-feature-name
+```
+
+Then open a Pull Request on GitHub.
+
+## Code Style
+
+### TypeScript
+
+- Use strict mode (`strict: true`)
+- Prefer `interface` over `type` for object shapes
+- Use explicit return types for functions
+- Document public APIs with TSDoc
+
+```typescript
+/**
+ * Validates password against configured rules
+ * @param password - The password to validate
+ * @param rules - Validation rules to apply
+ * @returns Validation result with error messages
+ */
+export function validatePassword(
+  password: string,
+  rules: PasswordValidation
+): ValidationResult {
+  // Implementation
+}
+```
+
+### React Components
+
+- Use functional components with hooks
+- Prefer composition over inheritance
+- Keep components focused and single-purpose
+- Use `React.memo` for expensive renders
+
+```tsx
+interface ButtonProps {
+  variant?: 'primary' | 'secondary'
+  children: React.ReactNode
+  onClick?: () => void
+}
+
+export function Button({ variant = 'primary', children, onClick }: ButtonProps) {
+  return (
+    <button
+      className={cn('btn', variant === 'primary' && 'btn-primary')}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  )
+}
+```
+
+### Styling
+
+- Use Tailwind CSS utility classes
+- No hardcoded color values
+- Use design tokens via CSS variables
+- Mobile-first responsive design
+
+```tsx
+// Good
+<div className="p-4 text-foreground bg-background md:p-6">
+
+// Bad
+<div className="p-4 text-gray-900 bg-white" style={{ padding: '20px' }}>
+```
+
+### Accessibility
+
+- All interactive elements must be keyboard accessible
+- Provide proper ARIA labels and roles
+- Maintain sufficient color contrast (4.5:1 minimum)
+- Test with screen readers
+
+```tsx
+<button
+  aria-label="Close dialog"
+  aria-pressed={isPressed}
+  onClick={onClose}
+>
+  <XIcon aria-hidden="true" />
+</button>
+```
+
+## Testing Guidelines
+
+### Test Coverage
+
+- Minimum 80% coverage overall
+- 100% coverage for critical authentication flows
+- Test pyramid: 70% unit, 20% integration, 10% E2E
+
+### Unit Tests
+
+```typescript
+import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
+
+describe('CredentialLoginForm', () => {
+  it('renders email input when authMethod is email', () => {
+    const mockAuthClient = { signIn: { email: vi.fn() } }
+    render(
+      <CredentialLoginForm
+        authMethod="email"
+        authClient={mockAuthClient}
+      />
+    )
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
+  })
+})
+```
+
+### Integration Tests
+
+Test complete user flows with mocked APIs:
+
+```typescript
+it('completes full login flow', async () => {
+  const mockAuthClient = {
+    signIn: {
+      email: vi.fn().mockResolvedValue({ user: { id: '1' } })
+    }
+  }
+
+  render(<CredentialLoginForm authMethod="email" authClient={mockAuthClient} />)
+
+  await userEvent.type(screen.getByLabelText(/email/i), 'test@example.com')
+  await userEvent.type(screen.getByLabelText(/password/i), 'password123')
+  await userEvent.click(screen.getByRole('button', { name: /sign in/i }))
+
+  await waitFor(() => {
+    expect(mockAuthClient.signIn.email).toHaveBeenCalled()
+  })
+})
+```
+
+## Adding a New Component
+
+1. **Create the specification** in `specs/` following the template
+2. **Write tests first** (TDD)
+3. **Implement the component** in `packages/ui/src/components/`
+4. **Add to the registry** in `apps/web/src/registry/`
+5. **Write documentation** in `apps/web/content/docs/components/`
+6. **Add to the builder UI** if applicable
+
+## Adding a New Translation
+
+1. Create a new locale file in `packages/ui/src/locales/`:
+
+```json
+// packages/ui/src/locales/de.json
+{
+  "auth": {
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signIn": "Anmelden",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?"
+  }
+}
+```
+
+2. Register the locale in `packages/ui/src/locales/index.ts`
+
+3. Add documentation for the new language
+
+## Pull Request Guidelines
+
+- Fill out the PR template completely
+- Link related issues
+- Include screenshots for UI changes
+- Ensure all checks pass
+- Request review from maintainers
+
+### PR Checklist
+
+- [ ] Tests added/updated
+- [ ] Documentation updated
+- [ ] TypeScript types correct
+- [ ] Accessibility verified
+- [ ] Mobile responsive
+- [ ] i18n strings externalized
+
+## Getting Help
+
+- 💬 [Discord Community](https://discord.gg/better-auth)
+- 🐛 [GitHub Issues](https://github.com/better-auth-ui/better-auth-ui/issues)
+- 📧 support@better-auth-ui.com
+
+## Recognition
+
+Contributors are recognized in:
+- The project's README
+- Release notes
+- The contributors page on the website
+
+Thank you for contributing! 🎉
+

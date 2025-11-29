@@ -17,21 +17,63 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
 **Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+**Project Type**: [single/web/mobile - determines source structure]
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify compliance with `.specify/memory/constitution.md` principles:
+
+**I. Code Quality**
+
+- [ ] TypeScript strict mode enabled
+- [ ] Linting configuration in place (ESLint/Prettier)
+- [ ] Code complexity monitoring planned (functions < 10 cyclomatic complexity)
+- [ ] TSDoc required for public APIs
+- [ ] Time/space complexity documented for non-trivial algorithms
+
+**II. Testing Standards**
+
+- [ ] TDD workflow planned (tests written first, reviewed, fail, then implement)
+- [ ] Test coverage targets defined (minimum 80%, critical paths 100%)
+- [ ] Test pyramid strategy documented (70% unit, 20% integration, 10% e2e)
+- [ ] Performance regression tests planned for user-facing features
+- [ ] Test suite performance acceptable (<5s for unit tests)
+
+**III. User Experience Consistency**
+
+- [ ] WCAG 2.1 Level AA compliance verification planned
+- [ ] Design tokens/system in place (no hardcoded styling values)
+- [ ] i18n externalization strategy defined (no hardcoded strings)
+- [ ] Error handling patterns established (user-friendly + logging)
+- [ ] Loading states planned for async operations
+
+**IV. Performance Requirements**
+
+- [ ] TTI target < 3s on 3G for critical paths
+- [ ] Interaction feedback < 100ms, completion < 1s
+- [ ] Bundle size impact assessed (components < 10KB gzipped)
+- [ ] React render optimization strategy (memoization, profiling)
+- [ ] Memory leak prevention (cleanup handlers documented)
+- [ ] 60 FPS animation targets (CSS transforms, no layout thrashing)
+
+**Complexity Justification Required If:**
+
+- Cyclomatic complexity > 10
+- Bundle size increase > 5KB
+- New third-party dependency
+- Breaking API changes
+- Performance regression
+- Accessibility exceptions
 
 ## Project Structure
 

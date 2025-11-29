@@ -1,0 +1,121 @@
+---
+title: better-auth UI
+description: Beautiful, accessible authentication components for better-auth. Install via shadcn CLI or npm package.
+icon: Shield
+---
+
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+# better-auth UI
+
+Beautiful, accessible authentication components for [better-auth](https://better-auth.com). Choose your installation method:
+
+<Cards>
+  <Card
+    title="🚀 Quick Start"
+    description="Get up and running in 5 minutes"
+    href="/docs/getting-started"
+  />
+  <Card
+    title="📦 Installation"
+    description="Choose shadcn CLI or npm package"
+    href="/docs/installation"
+  />
+  <Card
+    title="🔧 Builder"
+    description="Configure components visually"
+    href="/builder"
+  />
+  <Card
+    title="📚 API Reference"
+    description="Full component documentation"
+    href="/docs/components/credential-login"
+  />
+</Cards>
+
+## Installation Methods
+
+<Tabs items={['shadcn CLI', 'npm Package']}>
+  <Tab value="shadcn CLI">
+    ```bash
+    npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+    ```
+
+    - Full source code ownership
+    - Complete customization freedom
+    - Manual updates (re-run CLI)
+  </Tab>
+  <Tab value="npm Package">
+    ```bash
+    pnpm add @better-auth-ui/components
+    ```
+
+    - Managed updates via npm
+    - Prop-based configuration
+    - Smaller maintenance overhead
+  </Tab>
+</Tabs>
+
+## Features
+
+- **🎨 shadcn/ui Compatible** - Same patterns and styling you know
+- **♿ Accessible** - WCAG 2.1 AA compliant out of the box
+- **🌍 Internationalized** - Built-in i18n support with extensible locales
+- **📱 Responsive** - Mobile-first design
+- **🔒 Secure** - Built for better-auth 1.4+
+- **⚡ Fast** - Optimized bundle size, tree-shakeable
+
+## Available Components
+
+| Component | Description | Status |
+|-----------|-------------|--------|
+| `CredentialLoginForm` | Email/username/phone login | ✅ Ready |
+| `SignUpForm` | Registration form | 🔜 Coming |
+| `ForgotPasswordForm` | Password reset | 🔜 Coming |
+| `TwoFactorForm` | 2FA verification | 🔜 Coming |
+| `OAuthButtons` | Social login buttons | 🔜 Coming |
+
+## Framework Support
+
+<Cards>
+  <Card
+    title="Next.js"
+    description="App Router & Pages Router"
+    href="/docs/installation/nextjs"
+  />
+  <Card
+    title="React (Vite)"
+    description="With React Router"
+    href="/docs/installation/vite"
+  />
+  <Card
+    title="TanStack Start"
+    description="Full-stack React framework"
+    href="/docs/installation/tanstack-start"
+  />
+</Cards>
+
+## Quick Example
+
+```tsx
+import { CredentialLoginForm } from '@better-auth-ui/components'
+import { authClient } from '@/lib/auth-client'
+
+export function SignInPage() {
+  return (
+    <CredentialLoginForm
+      authMethod="email"
+      authClient={authClient}
+      showRememberMe
+      showForgotPassword
+      onSuccess={() => window.location.href = '/dashboard'}
+    />
+  )
+}
+```
+
+<Callout type="info">
+  Need help? Check out the [troubleshooting guide](/docs/troubleshooting) or join our [Discord community](https://discord.gg/better-auth).
+</Callout>

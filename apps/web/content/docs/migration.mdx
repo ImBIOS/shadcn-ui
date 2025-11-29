@@ -1,0 +1,279 @@
+---
+title: Migration Guide
+description: Migrating to better-auth UI from other solutions
+icon: ArrowRightLeft
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Migration Guide
+
+This guide helps you migrate to better-auth UI from other authentication UI solutions.
+
+## From Original better-auth-ui
+
+If you're using the original `better-auth-ui` package (now deprecated), follow these steps:
+
+<Steps>
+  <Step>
+    ### Remove the old package
+
+    ```bash
+    pnpm remove better-auth-ui
+    ```
+  </Step>
+
+  <Step>
+    ### Install the new package
+
+    ```bash
+    pnpm add @better-auth-ui/components
+    ```
+  </Step>
+
+  <Step>
+    ### Update imports
+
+    ```diff
+    - import { SignInForm } from 'better-auth-ui'
+    + import { CredentialLoginForm } from '@better-auth-ui/components'
+    ```
+  </Step>
+
+  <Step>
+    ### Update component usage
+
+    ```diff
+    - <SignInForm />
+    + <CredentialLoginForm
+    +   authMethod="email"
+    +   authClient={authClient}
+    + />
+    ```
+  </Step>
+</Steps>
+
+### API Changes
+
+| Old API | New API | Notes |
+|---------|---------|-------|
+| `<SignInForm />` | `<CredentialLoginForm authMethod="email" />` | Explicit auth method required |
+| `mode="email"` | `authMethod="email"` | Renamed prop |
+| `mode="username"` | `authMethod="username"` | Renamed prop |
+| `mode="phone"` | `authMethod="phone"` | Renamed prop |
+| `client` | `authClient` | Renamed for clarity |
+| `onAuth` | `onSuccess` | Renamed for clarity |
+| `onFail` | `onError` | Renamed, now receives `AuthError` |
+| `styles` | `classNames` | More granular styling |
+
+### Removed Props
+
+These props are no longer needed (handled automatically or via configuration):
+
+- `theme` - Use Tailwind CSS theme
+- `locale` - Use i18next configuration
+- `apiEndpoint` - Configured in authClient
+
+## From NextAuth/Auth.js UI
+
+If you're migrating from NextAuth's built-in pages:
+
+<Steps>
+  <Step>
+    ### Install better-auth
+
+    ```bash
+    pnpm add better-auth@^1.4.0
+    ```
+
+    Follow the [better-auth migration guide](https://better-auth.com/docs/migrate/nextauth) for backend setup.
+  </Step>
+
+  <Step>
+    ### Install better-auth UI
+
+    ```bash
+    pnpm add @better-auth-ui/components
+    ```
+  </Step>
+
+  <Step>
+    ### Create auth client
+
+    ```typescript title="lib/auth-client.ts"
+    import { createAuthClient } from 'better-auth/client'
+
+    export const authClient = createAuthClient({
+      baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+    })
+    ```
+  </Step>
+
+  <Step>
+    ### Replace sign-in page
+
+    ```tsx title="app/auth/sign-in/page.tsx"
+    'use client'
+
+    import { CredentialLoginForm } from '@better-auth-ui/components'
+    import { authClient } from '@/lib/auth-client'
+    import { useRouter } from 'next/navigation'
+
+    export default function SignInPage() {
+      const router = useRouter()
+
+      return (
+        <div className="flex min-h-screen items-center justify-center">
+          <CredentialLoginForm
+            authMethod="email"
+            authClient={authClient}
+            showRememberMe
+            showForgotPassword
+            onSuccess={() => router.push('/dashboard')}
+          />
+        </div>
+      )
+    }
+    ```
+  </Step>
+</Steps>
+
+### Mapping NextAuth Features
+
+| NextAuth | better-auth UI |
+|----------|----------------|
+| `signIn()` | `authClient.signIn.email()` |
+| `signOut()` | `authClient.signOut()` |
+| `useSession()` | `authClient.useSession()` |
+| Providers | OAuth buttons (coming soon) |
+| Credentials provider | `CredentialLoginForm` |
+
+## From Custom Implementation
+
+If you have a custom authentication UI:
+
+### 1. Audit your current implementation
+
+Document:
+- Authentication methods used (email, username, OAuth)
+- Form validation rules
+- Error handling patterns
+- Custom styling
+
+### 2. Choose installation method
+
+| Scenario | Recommended Method |
+|----------|-------------------|
+| Heavy customization | shadcn CLI |
+| Standard implementation | npm package |
+| Design system integration | shadcn CLI |
+| Quick setup | npm package |
+
+### 3. Gradual migration
+
+Migrate page by page:
+
+```tsx
+// Phase 1: Replace sign-in
+import { CredentialLoginForm } from '@better-auth-ui/components'
+
+// Phase 2: Replace sign-up (when available)
+// import { SignUpForm } from '@better-auth-ui/components'
+
+// Phase 3: Replace password reset (when available)
+// import { ForgotPasswordForm } from '@better-auth-ui/components'
+```
+
+### 4. Migrate validation rules
+
+Map your validation to `passwordValidation`:
+
+```tsx
+// Old custom validation
+const validatePassword = (password) => {
+  if (password.length < 8) return 'Too short'
+  if (!/[A-Z]/.test(password)) return 'Need uppercase'
+  if (!/[0-9]/.test(password)) return 'Need number'
+  return null
+}
+
+// New better-auth UI config
+<CredentialLoginForm
+  passwordValidation={{
+    minLength: 8,
+    requireUppercase: true,
+    requireNumbers: true,
+  }}
+/>
+```
+
+### 5. Migrate styling
+
+Map your styles to `classNames`:
+
+```tsx
+// Old custom styles
+<form className="my-form">
+  <input className="my-input" />
+  <button className="my-button" />
+</form>
+
+// New better-auth UI
+<CredentialLoginForm
+  className="my-form"
+  classNames={{
+    input: 'my-input',
+    button: 'my-button',
+  }}
+/>
+```
+
+## From Clerk/Auth0 UI
+
+If migrating from Clerk or Auth0's embedded UIs:
+
+<Callout type="warn">
+  This requires migrating your entire authentication backend, not just the UI.
+</Callout>
+
+1. Set up better-auth backend (see [better-auth docs](https://better-auth.com/docs))
+2. Migrate user data
+3. Install better-auth UI
+4. Replace UI components
+
+## Troubleshooting Migration
+
+### Styles not matching
+
+If your styles don't match:
+
+1. Ensure Tailwind CSS is configured
+2. Add component paths to `tailwind.config.js`:
+   ```js
+   content: [
+     './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
+   ]
+   ```
+3. Use `classNames` prop for custom styling
+
+### Auth client not working
+
+Verify:
+1. better-auth is configured correctly on the server
+2. API routes are set up (`/api/auth/[...all]`)
+3. `baseURL` in authClient matches your server
+
+### TypeScript errors
+
+Ensure compatible versions:
+```bash
+pnpm add better-auth@^1.4.0 @better-auth-ui/components@latest
+```
+
+## Getting Help
+
+- [Discord Community](https://discord.gg/better-auth)
+- [GitHub Discussions](https://github.com/better-auth-ui/better-auth-ui/discussions)
+- [GitHub Issues](https://github.com/better-auth-ui/better-auth-ui/issues)
+

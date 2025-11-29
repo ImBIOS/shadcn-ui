@@ -1,0 +1,246 @@
+---
+title: TanStack Start Example
+description: Complete TanStack Start integration example with better-auth-ui
+---
+
+# Complete TanStack Start Example
+
+This example shows a complete authentication flow in TanStack Start with file-based routing and route guards.
+
+## Full Sign-In Route
+
+```tsx title="app/routes/auth/sign-in.tsx"
+import { createFileRoute, useNavigate, useSearch, Link } from '@tanstack/react-router'
+import { CredentialLoginForm } from '@better-auth-ui/components'
+import { authClient } from '@/lib/auth-client'
+
+export const Route = createFileRoute('/auth/sign-in')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    callbackUrl: (search.callbackUrl as string) || '/dashboard',
+  }),
+  component: SignInPage,
+})
+
+function SignInPage() {
+  const navigate = useNavigate()
+  const { callbackUrl } = useSearch({ from: '/auth/sign-in' })
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-md">
+        <div className="rounded-lg border bg-white p-8 shadow-sm">
+          {/* Header */}
+          <div className="mb-6 text-center">
+            <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
+            <p className="mt-2 text-gray-600">
+              Sign in to access your account
+            </p>
+          </div>
+
+          {/* Login Form */}
+          <CredentialLoginForm
+            authMethod="email"
+            authClient={authClient}
+            showRememberMe={true}
+            showForgotPassword={true}
+            forgotPasswordUrl="/auth/forgot-password"
+            passwordValidation={{
+              minLength: 8,
+              requireUppercase: true,
+              requireNumbers: true,
+            }}
+            onSuccess={() => {
+              navigate({ to: callbackUrl })
+            }}
+            onError={(error) => {
+              console.error('Authentication failed:', error.code, error.message)
+            }}
+            className="mt-4"
+          />
+
+          {/* Footer Links */}
+          <div className="mt-6 text-center text-sm text-gray-600">
+            Don't have an account?{' '}
+            <Link
+              to="/auth/sign-up"
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
+              Sign up
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+## Auth Client Configuration
+
+```typescript title="app/lib/auth-client.ts"
+import { createAuthClient } from 'better-auth/client'
+
+export const authClient = createAuthClient({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+})
+
+// Type-safe auth helpers
+export async function getSession() {
+  try {
+    const session = await authClient.session.get()
+    return session
+  } catch {
+    return null
+  }
+}
+
+export async function signOut() {
+  await authClient.signOut()
+}
+```
+
+## API Route Handler
+
+```typescript title="app/routes/api/auth/$.ts"
+import { createAPIFileRoute } from '@tanstack/start/api'
+import { auth } from '@/lib/auth'
+
+export const APIRoute = createAPIFileRoute('/api/auth/$')({
+  GET: async ({ request }) => {
+    return auth.handler(request)
+  },
+  POST: async ({ request }) => {
+    return auth.handler(request)
+  },
+})
+```
+
+## Protected Dashboard Route
+
+```tsx title="app/routes/dashboard/index.tsx"
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
+import { authClient, signOut } from '@/lib/auth-client'
+import { useState } from 'react'
+
+export const Route = createFileRoute('/dashboard/')({
+  beforeLoad: async ({ location }) => {
+    const session = await authClient.session.get()
+    if (!session) {
+      throw redirect({
+        to: '/auth/sign-in',
+        search: { callbackUrl: location.pathname },
+      })
+    }
+    return { session }
+  },
+  component: DashboardPage,
+})
+
+function DashboardPage() {
+  const { session } = Route.useLoaderData()
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSignOut = async () => {
+    setIsLoading(true)
+    try {
+      await signOut()
+      navigate({ to: '/auth/sign-in' })
+    } catch (error) {
+      console.error('Sign out failed:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+              <p className="text-gray-600">
+                Welcome, {session.user.name || session.user.email}
+              </p>
+            </div>
+            <button
+              onClick={handleSignOut}
+              disabled={isLoading}
+              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+            >
+              {isLoading ? 'Signing out...' : 'Sign out'}
+            </button>
+          </div>
+
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            <div className="rounded-lg border p-4">
+              <h2 className="font-semibold">Account Info</h2>
+              <dl className="mt-2 space-y-1 text-sm">
+                <div>
+                  <dt className="text-gray-500">Email</dt>
+                  <dd>{session.user.email}</dd>
+                </div>
+                <div>
+                  <dt className="text-gray-500">User ID</dt>
+                  <dd className="font-mono text-xs">{session.user.id}</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+## Root Route with Layout
+
+```tsx title="app/routes/__root.tsx"
+import { createRootRoute, Outlet, Link } from '@tanstack/react-router'
+
+export const Route = createRootRoute({
+  component: RootLayout,
+})
+
+function RootLayout() {
+  return (
+    <div className="min-h-screen">
+      <header className="border-b bg-white">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between p-4">
+          <Link to="/" className="text-xl font-bold">
+            My App
+          </Link>
+          <div className="flex gap-4">
+            <Link
+              to="/auth/sign-in"
+              className="text-gray-600 hover:text-gray-900"
+            >
+              Sign In
+            </Link>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  )
+}
+```
+
+## Environment Variables
+
+```bash title=".env"
+VITE_API_URL="http://localhost:3000"
+DATABASE_URL="postgresql://..."
+BETTER_AUTH_SECRET="your-secret-key"
+```
+
+## Next Steps
+
+- [Learn more about route guards](/docs/guides/tanstack-route-guards)
+- [Customize form appearance](/docs/components/credential-login)
+- [Add OAuth providers](/docs/guides/oauth-providers)
+

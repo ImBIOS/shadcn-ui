@@ -1,0 +1,36 @@
+{
+  "auth": {
+    "email": "Email",
+    "username": "Username",
+    "phoneNumber": "Phone Number",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign in",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signInWithProvider": "Sign in with {{provider}}",
+    "signingIn": "Signing in...",
+    "errors": {
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidUsername": "Username must be 3-30 characters and contain only letters, numbers, hyphens, and underscores",
+      "invalidPhone": "Please enter a valid phone number (E.164 format)",
+      "invalidPassword": "Password must be at least {{minLength}} characters",
+      "passwordTooShort": "Password must be at least {{minLength}} characters",
+      "passwordTooLong": "Password must not exceed {{maxLength}} characters",
+      "passwordRequireUppercase": "Password must contain at least one uppercase letter",
+      "passwordRequireLowercase": "Password must contain at least one lowercase letter",
+      "passwordRequireNumbers": "Password must contain at least one number",
+      "passwordRequireSymbols": "Password must contain at least one special character",
+      "invalidCredentials": "Invalid email or password",
+      "userNotFound": "No account found with that email address",
+      "accountLocked": "Your account has been temporarily locked. Please try again later or contact support.",
+      "rateLimitExceeded": "Too many login attempts. Please wait a few minutes before trying again.",
+      "serverError": "An unexpected error occurred. Please try again later.",
+      "networkError": "Unable to connect. Please check your internet connection.",
+      "validationError": "Please correct the errors in the form.",
+      "twoFactorRequired": "Two-factor authentication required. Redirecting..."
+    }
+  }
+}

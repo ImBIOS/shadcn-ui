@@ -1,0 +1,12 @@
+# Nx ignore patterns
+node_modules
+dist
+.nx
+.turbo
+.alchemy
+.source
+.wrangler
+coverage
+graph.html
+static
+

@@ -1,0 +1,409 @@
+---
+title: Troubleshooting
+description: Common issues and solutions for better-auth UI
+icon: Bug
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+# Troubleshooting
+
+Common issues and their solutions when using better-auth UI components.
+
+## Installation Issues
+
+### Module not found: Can't resolve '@better-auth-ui/components'
+
+**Cause**: Package not installed.
+
+**Solution**:
+
+```bash
+pnpm add @better-auth-ui/components
+```
+
+### Module not found: Can't resolve '@/components/auth/credential-login-form'
+
+**Cause**: shadcn CLI installation didn't complete or path alias misconfigured.
+
+**Solution**:
+
+1. Re-run the installation:
+   ```bash
+   npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+   ```
+
+2. Verify your `tsconfig.json` has the path alias:
+   ```json
+   {
+     "compilerOptions": {
+       "paths": {
+         "@/*": ["./src/*"]
+       }
+     }
+   }
+   ```
+
+### Peer dependency warnings
+
+**Cause**: Missing or incompatible peer dependencies.
+
+**Solution**:
+
+```bash
+pnpm add better-auth@^1.4.0 react@^19.0.0 react-dom@^19.0.0
+```
+
+## Runtime Errors
+
+### "authClient is undefined"
+
+**Cause**: Auth client not initialized or not passed to component.
+
+**Solution**:
+
+1. Create the auth client:
+   ```typescript title="lib/auth-client.ts"
+   import { createAuthClient } from 'better-auth/client'
+
+   export const authClient = createAuthClient({
+     baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+   })
+   ```
+
+2. Import and pass to component:
+   ```tsx
+   import { authClient } from '@/lib/auth-client'
+
+   <CredentialLoginForm
+     authMethod="email"
+     authClient={authClient}
+   />
+   ```
+
+### "Network error" when submitting form
+
+**Cause**: better-auth server not configured or unreachable.
+
+**Solution**:
+
+1. Check the server is running
+2. Verify `baseURL` matches your server URL
+3. Check CORS configuration:
+
+<Tabs items={['Next.js', 'Vite', 'TanStack Start']}>
+  <Tab value="Next.js">
+    ```typescript title="app/api/auth/[...all]/route.ts"
+    import { auth } from '@/lib/auth'
+
+    export const { GET, POST } = auth.handler
+    ```
+  </Tab>
+  <Tab value="Vite">
+    ```typescript title="vite.config.ts"
+    export default defineConfig({
+      server: {
+        proxy: {
+          '/api/auth': 'http://localhost:3000',
+        },
+      },
+    })
+    ```
+  </Tab>
+  <Tab value="TanStack Start">
+    ```typescript title="app/api.ts"
+    import { createAPIFileRoute } from '@tanstack/react-start/api'
+    import { auth } from '@/lib/auth'
+
+    export const Route = createAPIFileRoute('/api/auth/$')({
+      GET: auth.handler,
+      POST: auth.handler,
+    })
+    ```
+  </Tab>
+</Tabs>
+
+### "Invalid credentials" despite correct password
+
+**Cause**: Email/username case sensitivity or encoding issues.
+
+**Solution**:
+
+1. Check database for exact stored value
+2. Verify password hashing matches between sign-up and sign-in
+3. Check for leading/trailing whitespace in inputs
+
+### Two-factor authentication not redirecting
+
+**Cause**: `onError` callback not handling `TWO_FACTOR_REQUIRED`.
+
+**Solution**:
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  onError={(error) => {
+    if (error.code === 'TWO_FACTOR_REQUIRED') {
+      router.push('/auth/two-factor')
+    }
+  }}
+/>
+```
+
+## Styling Issues
+
+### Styles not applying
+
+**Cause**: Tailwind CSS not configured to scan component files.
+
+**Solution**:
+
+Update `tailwind.config.js`:
+
+```javascript
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    // For npm package
+    './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
+  ],
+  // ...
+}
+```
+
+### Dark mode not working
+
+**Cause**: Theme not configured or provider missing.
+
+**Solution**:
+
+1. Ensure you have a theme provider:
+   ```tsx title="app/providers.tsx"
+   import { ThemeProvider } from 'next-themes'
+
+   export function Providers({ children }) {
+     return (
+       <ThemeProvider attribute="class" defaultTheme="system">
+         {children}
+       </ThemeProvider>
+     )
+   }
+   ```
+
+2. Add `darkMode: 'class'` to Tailwind config:
+   ```javascript
+   export default {
+     darkMode: 'class',
+     // ...
+   }
+   ```
+
+### Custom classNames not overriding defaults
+
+**Cause**: CSS specificity issues.
+
+**Solution**:
+
+Use the `classNames` prop with more specific selectors or `!important`:
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  classNames={{
+    button: '!bg-blue-600 !hover:bg-blue-700',
+  }}
+/>
+```
+
+Or use Tailwind's `@apply` in your CSS:
+
+```css
+.my-custom-button {
+  @apply bg-blue-600 hover:bg-blue-700 !important;
+}
+```
+
+## TypeScript Errors
+
+### Type 'AuthClient' is not assignable
+
+**Cause**: Version mismatch between better-auth versions.
+
+**Solution**:
+
+Ensure consistent versions:
+
+```bash
+pnpm add better-auth@^1.4.0
+```
+
+### Property 'signIn' does not exist on type 'AuthClient'
+
+**Cause**: Using incorrect import or outdated types.
+
+**Solution**:
+
+Import from the correct path:
+
+```typescript
+import { createAuthClient } from 'better-auth/client'
+```
+
+Not:
+
+```typescript
+// Wrong
+import { createAuthClient } from 'better-auth'
+```
+
+## Validation Issues
+
+### Password validation not matching server
+
+**Cause**: Client and server validation rules differ.
+
+**Solution**:
+
+Match your `passwordValidation` prop to server config:
+
+```tsx
+// Client
+<CredentialLoginForm
+  passwordValidation={{
+    minLength: 12,
+    requireUppercase: true,
+  }}
+/>
+```
+
+```typescript
+// Server
+export const auth = betterAuth({
+  emailAndPassword: {
+    password: {
+      minLength: 12,
+      // Match client rules
+    }
+  },
+})
+```
+
+### Email validation too strict/loose
+
+**Cause**: Default regex doesn't match your requirements.
+
+**Solution**:
+
+For shadcn CLI installations, modify the validation schema:
+
+```typescript title="components/auth/credential-login-form.tsx"
+const emailSchema = z.string().email().refine(
+  (email) => email.endsWith('@company.com'),
+  { message: 'Only company emails allowed' }
+)
+```
+
+## Performance Issues
+
+### Form re-renders on every keystroke
+
+**Cause**: Parent component re-rendering or missing memoization.
+
+**Solution**:
+
+1. Memoize callbacks:
+   ```tsx
+   const handleSuccess = useCallback(() => {
+     router.push('/dashboard')
+   }, [router])
+
+   const handleError = useCallback((error: AuthError) => {
+     console.error(error)
+   }, [])
+
+   <CredentialLoginForm
+     authMethod="email"
+     authClient={authClient}
+     onSuccess={handleSuccess}
+     onError={handleError}
+   />
+   ```
+
+2. Ensure `authClient` is stable (created outside component or memoized)
+
+### Large bundle size
+
+**Cause**: Not tree-shaking unused code.
+
+**Solution**:
+
+1. Import only what you need:
+   ```tsx
+   // Good
+   import { CredentialLoginForm } from '@better-auth-ui/components'
+
+   // Avoid importing the entire package
+   ```
+
+2. Use the shadcn CLI method for maximum control
+
+## Accessibility Issues
+
+### Screen reader not announcing errors
+
+**Cause**: Custom error component missing ARIA attributes.
+
+**Solution**:
+
+Use the built-in error display or add proper ARIA:
+
+```tsx
+<CredentialLoginForm
+  errorRenderer={(error) => (
+    <div role="alert" aria-live="polite" className="text-red-500">
+      {error.message}
+    </div>
+  )}
+/>
+```
+
+### Focus not visible
+
+**Cause**: CSS overriding default focus styles.
+
+**Solution**:
+
+Ensure focus styles are visible:
+
+```css
+.credential-form input:focus {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+```
+
+## Still Having Issues?
+
+<Callout type="info">
+  If you're still experiencing problems:
+
+  1. Check the [GitHub Issues](https://github.com/better-auth-ui/better-auth-ui/issues)
+  2. Search existing discussions
+  3. Open a new issue with:
+     - Error message and stack trace
+     - Package versions (`pnpm list better-auth @better-auth-ui/components`)
+     - Reproduction steps
+     - Framework and Node.js version
+</Callout>
+
+## Related
+
+- [Getting Started](/docs/getting-started)
+- [Installation Guides](/docs/installation)
+- [API Reference](/docs/components/credential-login)
+

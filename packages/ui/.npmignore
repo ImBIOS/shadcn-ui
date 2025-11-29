@@ -1,0 +1,58 @@
+# Source files (dist is published, not src)
+src/
+tests/
+coverage/
+
+# Configuration files
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+biome.json
+
+# Build artifacts (except dist)
+*.tsbuildinfo
+*.tgz
+
+# Development files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Source maps (optional - remove if you want source maps published)
+# dist/*.map
+
+# Test fixtures and mocks
+__mocks__/
+__fixtures__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Documentation source (README.md is included via files field)
+docs/
+
+# Local development
+.env
+.env.*
+*.local
+*.local.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+Jenkinsfile
+
+# Misc
+.editorconfig
+.eslintrc*
+.prettierrc*
+.prettierignore
+.eslintignore
+

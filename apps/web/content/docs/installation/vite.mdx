@@ -1,0 +1,168 @@
+---
+title: React (Vite) Installation
+description: Set up better-auth-ui with React and Vite
+---
+
+# React (Vite) Installation
+
+This guide covers installing better-auth-ui in a React project using Vite and React Router.
+
+## Prerequisites
+
+- React 18+ or 19+
+- Vite 5+
+- React Router 6+
+- Tailwind CSS configured
+- TypeScript (recommended)
+
+## Step 1: Install better-auth
+
+```bash
+pnpm add better-auth@^1.4.0
+```
+
+## Step 2: Configure better-auth Client
+
+```typescript title="src/lib/auth-client.ts"
+import { createAuthClient } from "better-auth/client";
+
+export const authClient = createAuthClient({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+});
+```
+
+## Step 3: Set Up better-auth Server
+
+You'll need a separate backend server (Express, Hono, etc.) with better-auth configured:
+
+```typescript title="server/auth.ts"
+import { betterAuth } from "better-auth";
+
+export const auth = betterAuth({
+  database: {
+    provider: "postgres",
+    url: process.env.DATABASE_URL,
+  },
+  emailAndPassword: {
+    enabled: true,
+  },
+});
+```
+
+## Step 4: Install Credential Login Component
+
+### Option A: shadcn CLI
+
+```bash
+npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+```
+
+### Option B: NPM Package
+
+```bash
+pnpm add @better-auth-ui/components
+```
+
+## Step 5: Create Sign-In Route
+
+```tsx title="src/routes/auth/sign-in.tsx"
+import { CredentialLoginForm } from "@better-auth-ui/components";
+// or: import { CredentialLoginForm } from '@/components/auth/credential-login-form'
+import { authClient } from "@/lib/auth-client";
+import { useNavigate } from "react-router-dom";
+
+export default function SignInPage() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex min-h-screen items-center justify-center p-6">
+      <div className="w-full max-w-sm">
+        <h1 className="mb-6 text-2xl font-bold text-center">Sign In</h1>
+        <CredentialLoginForm
+          authMethod="email"
+          authClient={authClient}
+          showRememberMe={true}
+          showForgotPassword={true}
+          forgotPasswordUrl="/auth/forgot-password"
+          onSuccess={() => navigate("/dashboard")}
+          onError={(error) => {
+            console.error("Login failed:", error.message);
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+## Step 6: Configure React Router
+
+```tsx title="src/main.tsx"
+import {
+  createBrowserRouter,
+  RouterProvider,
+  redirect,
+} from "react-router-dom";
+import { authClient } from "@/lib/auth-client";
+import SignInPage from "./routes/auth/sign-in";
+import DashboardPage from "./routes/dashboard";
+
+const router = createBrowserRouter([
+  {
+    path: "/auth/sign-in",
+    element: <SignInPage />,
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardPage />,
+    loader: async () => {
+      const session = await authClient.session.get();
+      if (!session) {
+        throw redirect("/auth/sign-in");
+      }
+      return { session };
+    },
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+## Step 7: Configure Tailwind CSS
+
+```javascript title="tailwind.config.js"
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    // For NPM package:
+    "./node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}",
+  ],
+  // ...
+};
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   └── auth/
+│       └── credential-login-form.tsx  # If using shadcn CLI
+├── lib/
+│   └── auth-client.ts
+├── routes/
+│   ├── auth/
+│   │   └── sign-in.tsx
+│   └── dashboard.tsx
+└── main.tsx
+```
+
+## Next Steps
+
+- [Configure route protection](/docs/guides/vite-router)
+- [View complete example](/docs/examples/vite-example)
+- [Customize the component](/docs/components/credential-login)

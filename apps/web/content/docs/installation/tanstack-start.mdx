@@ -1,0 +1,179 @@
+---
+title: TanStack Start Installation
+description: Set up better-auth-ui with TanStack Start
+---
+
+# TanStack Start Installation
+
+This guide covers installing better-auth-ui in a TanStack Start project with file-based routing.
+
+## Prerequisites
+
+- TanStack Start 1.x
+- React 18+ or 19+
+- Tailwind CSS configured
+- TypeScript (recommended)
+
+## Step 1: Install better-auth
+
+```bash
+pnpm add better-auth@^1.4.0
+```
+
+## Step 2: Configure better-auth Server
+
+```typescript title="app/lib/auth.ts"
+import { betterAuth } from 'better-auth'
+
+export const auth = betterAuth({
+  database: {
+    provider: 'postgres',
+    url: process.env.DATABASE_URL,
+  },
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+  },
+})
+```
+
+## Step 3: Configure Auth Client
+
+```typescript title="app/lib/auth-client.ts"
+import { createAuthClient } from 'better-auth/client'
+
+export const authClient = createAuthClient({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+})
+```
+
+## Step 4: Create API Route Handler
+
+```typescript title="app/routes/api/auth/$.ts"
+import { createAPIFileRoute } from '@tanstack/start/api'
+import { auth } from '@/lib/auth'
+
+export const APIRoute = createAPIFileRoute('/api/auth/$')({
+  GET: ({ request }) => auth.handler(request),
+  POST: ({ request }) => auth.handler(request),
+})
+```
+
+## Step 5: Install Credential Login Component
+
+### Option A: shadcn CLI
+
+```bash
+npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+```
+
+### Option B: NPM Package
+
+```bash
+pnpm add @better-auth-ui/components
+```
+
+## Step 6: Create Sign-In Route
+
+```tsx title="app/routes/auth/sign-in.tsx"
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { CredentialLoginForm } from '@better-auth-ui/components'
+// or: import { CredentialLoginForm } from '@/components/auth/credential-login-form'
+import { authClient } from '@/lib/auth-client'
+
+export const Route = createFileRoute('/auth/sign-in')({
+  component: SignInPage,
+})
+
+function SignInPage() {
+  const navigate = useNavigate()
+
+  return (
+    <div className="flex min-h-screen items-center justify-center p-6">
+      <div className="w-full max-w-sm">
+        <h1 className="mb-6 text-2xl font-bold text-center">Sign In</h1>
+        <CredentialLoginForm
+          authMethod="email"
+          authClient={authClient}
+          showRememberMe={true}
+          showForgotPassword={true}
+          forgotPasswordUrl="/auth/forgot-password"
+          onSuccess={() => navigate({ to: '/dashboard' })}
+          onError={(error) => {
+            console.error('Login failed:', error.message)
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+```
+
+## Step 7: Protect Routes with beforeLoad
+
+```tsx title="app/routes/dashboard/index.tsx"
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { authClient } from '@/lib/auth-client'
+
+export const Route = createFileRoute('/dashboard/')({
+  beforeLoad: async () => {
+    const session = await authClient.session.get()
+    if (!session) {
+      throw redirect({ to: '/auth/sign-in' })
+    }
+  },
+  component: DashboardPage,
+})
+
+function DashboardPage() {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <p>Welcome to your protected dashboard!</p>
+    </div>
+  )
+}
+```
+
+## Step 8: Configure Tailwind CSS
+
+```javascript title="tailwind.config.js"
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    // For NPM package:
+    './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
+  ],
+  // ...
+}
+```
+
+## Project Structure
+
+```
+app/
+├── components/
+│   └── auth/
+│       └── credential-login-form.tsx  # If using shadcn CLI
+├── lib/
+│   ├── auth.ts
+│   └── auth-client.ts
+├── routes/
+│   ├── __root.tsx
+│   ├── api/
+│   │   └── auth/
+│   │       └── $.ts
+│   ├── auth/
+│   │   └── sign-in.tsx
+│   └── dashboard/
+│       └── index.tsx
+└── routeTree.gen.ts
+```
+
+## Next Steps
+
+- [Configure route guards](/docs/guides/tanstack-route-guards)
+- [View complete example](/docs/examples/tanstack-example)
+- [Customize the component](/docs/components/credential-login)
+

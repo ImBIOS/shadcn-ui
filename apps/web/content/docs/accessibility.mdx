@@ -1,0 +1,299 @@
+---
+title: Accessibility
+description: WCAG 2.1 AA compliance documentation
+icon: Accessibility
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Accessibility
+
+better-auth UI components are designed to be WCAG 2.1 Level AA compliant. This document outlines our accessibility features and guidelines.
+
+## Compliance Overview
+
+| Criterion | Level | Status |
+|-----------|-------|--------|
+| 1.1 Text Alternatives | A | ✅ Compliant |
+| 1.3 Adaptable | A | ✅ Compliant |
+| 1.4 Distinguishable | AA | ✅ Compliant |
+| 2.1 Keyboard Accessible | A | ✅ Compliant |
+| 2.4 Navigable | AA | ✅ Compliant |
+| 3.1 Readable | A | ✅ Compliant |
+| 3.2 Predictable | A | ✅ Compliant |
+| 3.3 Input Assistance | AA | ✅ Compliant |
+| 4.1 Compatible | AA | ✅ Compliant |
+
+## Built-in Accessibility Features
+
+### Keyboard Navigation
+
+All components support full keyboard navigation:
+
+| Key | Action |
+|-----|--------|
+| `Tab` | Move focus to next interactive element |
+| `Shift + Tab` | Move focus to previous element |
+| `Enter` | Submit form / activate button |
+| `Escape` | Close dialogs / cancel actions |
+| `Space` | Toggle checkboxes / activate buttons |
+| `Arrow Keys` | Navigate within radio groups |
+
+### Focus Management
+
+- **Visible focus indicators**: All interactive elements have clear focus states
+- **Focus trapping**: Modal dialogs trap focus within the dialog
+- **Focus restoration**: Focus returns to trigger element when dialogs close
+- **Logical tab order**: Elements follow visual reading order
+
+```tsx
+// Focus styles are built-in
+<Input className="focus:ring-2 focus:ring-ring focus:ring-offset-2" />
+```
+
+### Screen Reader Support
+
+- **ARIA labels**: All inputs have associated labels
+- **Live regions**: Errors announced via `aria-live="polite"`
+- **Role attributes**: Proper semantic roles for all elements
+- **State announcements**: Loading and submission states announced
+
+```tsx
+// Error announcement
+<div role="alert" aria-live="polite">
+  Invalid email address
+</div>
+
+// Form with proper labeling
+<form aria-labelledby="form-title">
+  <h1 id="form-title">Sign In</h1>
+  <label htmlFor="email">Email</label>
+  <input id="email" type="email" aria-describedby="email-error" />
+  <span id="email-error" role="alert">Please enter a valid email</span>
+</form>
+```
+
+### Color Contrast
+
+All text meets WCAG AA minimum contrast ratios:
+
+- **Normal text**: 4.5:1 minimum
+- **Large text** (18pt+): 3:1 minimum
+- **UI components**: 3:1 minimum
+
+<Callout type="info">
+  Color contrast is maintained in both light and dark modes through CSS variables.
+</Callout>
+
+### Form Accessibility
+
+#### Labels
+
+Every form control has a visible label:
+
+```tsx
+<Label htmlFor="password">Password</Label>
+<Input
+  id="password"
+  type="password"
+  aria-describedby="password-hint"
+/>
+<p id="password-hint" className="text-sm text-muted-foreground">
+  At least 8 characters
+</p>
+```
+
+#### Error Messages
+
+Errors are associated with their inputs:
+
+```tsx
+<Input
+  id="email"
+  type="email"
+  aria-invalid={errors.email ? 'true' : 'false'}
+  aria-describedby={errors.email ? 'email-error' : undefined}
+/>
+{errors.email && (
+  <p id="email-error" role="alert" className="text-destructive">
+    {errors.email.message}
+  </p>
+)}
+```
+
+#### Required Fields
+
+Required fields are marked programmatically:
+
+```tsx
+<Label htmlFor="email">
+  Email <span aria-hidden="true">*</span>
+</Label>
+<Input
+  id="email"
+  type="email"
+  required
+  aria-required="true"
+/>
+```
+
+## Testing for Accessibility
+
+### Automated Testing
+
+We use axe-core for automated accessibility testing:
+
+```typescript
+import { axe, toHaveNoViolations } from 'jest-axe'
+
+expect.extend(toHaveNoViolations)
+
+it('has no accessibility violations', async () => {
+  const { container } = render(<CredentialLoginForm {...props} />)
+  const results = await axe(container)
+  expect(results).toHaveNoViolations()
+})
+```
+
+### Manual Testing Checklist
+
+Before release, we verify:
+
+- [ ] All functionality works with keyboard only
+- [ ] Screen reader announces all content correctly
+- [ ] Focus is visible and logical
+- [ ] Color is not the only way to convey information
+- [ ] Text can be resized to 200% without loss of functionality
+- [ ] Form errors are announced and associated with fields
+
+### Recommended Tools
+
+- **axe DevTools** - Browser extension for accessibility audits
+- **NVDA** (Windows) or **VoiceOver** (macOS) - Screen reader testing
+- **Lighthouse** - Chrome DevTools accessibility audit
+- **Color Contrast Analyzer** - Verify contrast ratios
+
+## Customization Without Breaking Accessibility
+
+When customizing components, maintain accessibility:
+
+### DO ✅
+
+```tsx
+// Use semantic HTML
+<button type="submit">Sign In</button>
+
+// Provide text alternatives for icons
+<button aria-label="Close">
+  <XIcon aria-hidden="true" />
+</button>
+
+// Use visible labels
+<Label htmlFor="email">Email</Label>
+<Input id="email" />
+
+// Maintain focus styles
+<Input className="focus:ring-2 focus:ring-ring" />
+```
+
+### DON'T ❌
+
+```tsx
+// Don't use div for buttons
+<div onClick={handleClick}>Sign In</div>
+
+// Don't rely on color alone
+<Input className={error ? 'border-red-500' : ''} />
+// Instead, include text error message
+
+// Don't remove focus styles
+<Input className="focus:outline-none" />
+
+// Don't use placeholder as label
+<Input placeholder="Email" /> // Missing visible label
+```
+
+## High Contrast Mode
+
+Components work in Windows High Contrast Mode:
+
+```css
+@media (prefers-contrast: high) {
+  .btn {
+    border: 2px solid currentColor;
+  }
+
+  .input {
+    border: 2px solid currentColor;
+  }
+}
+```
+
+## Reduced Motion
+
+Animations respect user preferences:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+## Language Support
+
+### Text Direction
+
+Components support RTL languages:
+
+```tsx
+<html dir="rtl" lang="ar">
+  <CredentialLoginForm authMethod="email" authClient={authClient} />
+</html>
+```
+
+### Language Declaration
+
+Ensure proper language attributes:
+
+```tsx
+<html lang="en">
+  <head>
+    <meta charSet="utf-8" />
+  </head>
+</html>
+```
+
+## Resources
+
+- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
+- [Inclusive Components](https://inclusive-components.design/)
+- [a11y Project](https://www.a11yproject.com/)
+
+## Reporting Accessibility Issues
+
+If you encounter accessibility barriers:
+
+1. **GitHub Issues**: File an issue with the `accessibility` label
+2. **Email**: accessibility@better-auth-ui.com
+3. **Include**:
+   - Description of the barrier
+   - Browser and assistive technology used
+   - Steps to reproduce
+
+We aim to address accessibility issues within 5 business days.
+
+## Commitment
+
+Accessibility is not a feature—it's a requirement. We're committed to making authentication accessible to everyone, regardless of ability.
+
+<Callout type="info">
+  Found an accessibility issue? Please [report it](https://github.com/better-auth-ui/better-auth-ui/issues/new?labels=accessibility). We take all reports seriously.
+</Callout>
+

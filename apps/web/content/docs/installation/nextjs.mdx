@@ -1,0 +1,152 @@
+---
+title: Next.js Installation
+description: Set up better-auth-ui with Next.js App Router
+---
+
+# Next.js Installation
+
+This guide covers installing better-auth-ui in a Next.js 14+ project using the App Router.
+
+## Prerequisites
+
+- Next.js 14+ with App Router
+- React 18+ or 19+
+- Tailwind CSS configured
+- TypeScript (recommended)
+
+## Step 1: Install better-auth
+
+```bash
+pnpm add better-auth@^1.4.0
+```
+
+## Step 2: Configure better-auth Server
+
+Create your auth configuration:
+
+```typescript title="lib/auth.ts"
+import { betterAuth } from 'better-auth'
+
+export const auth = betterAuth({
+  database: {
+    provider: 'postgres', // or 'mysql', 'sqlite'
+    url: process.env.DATABASE_URL,
+  },
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false, // Set to true in production
+  },
+})
+```
+
+## Step 3: Create API Route Handler
+
+```typescript title="app/api/auth/[...all]/route.ts"
+import { auth } from '@/lib/auth'
+
+export const { GET, POST } = auth.handler
+```
+
+## Step 4: Configure Auth Client
+
+```typescript title="lib/auth-client.ts"
+import { createAuthClient } from 'better-auth/client'
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+})
+```
+
+## Step 5: Install Credential Login Component
+
+### Option A: shadcn CLI
+
+```bash
+npx shadcn@latest add "https://better-auth-ui.com/r/credential-login"
+```
+
+### Option B: NPM Package
+
+```bash
+pnpm add @better-auth-ui/components
+```
+
+## Step 6: Create Sign-In Page
+
+```tsx title="app/auth/sign-in/page.tsx"
+'use client'
+
+import { CredentialLoginForm } from '@better-auth-ui/components'
+// or: import { CredentialLoginForm } from '@/components/auth/credential-login-form'
+import { authClient } from '@/lib/auth-client'
+import { useRouter } from 'next/navigation'
+
+export default function SignInPage() {
+  const router = useRouter()
+
+  return (
+    <div className="flex min-h-screen items-center justify-center p-6">
+      <div className="w-full max-w-sm">
+        <h1 className="mb-6 text-2xl font-bold text-center">Sign In</h1>
+        <CredentialLoginForm
+          authMethod="email"
+          authClient={authClient}
+          showRememberMe={true}
+          showForgotPassword={true}
+          forgotPasswordUrl="/auth/forgot-password"
+          onSuccess={() => router.push('/dashboard')}
+          onError={(error) => {
+            console.error('Login failed:', error.message)
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+```
+
+## Step 7: Configure Tailwind CSS
+
+Ensure your Tailwind configuration includes the component paths:
+
+```javascript title="tailwind.config.js"
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    // For NPM package:
+    './node_modules/@better-auth-ui/**/*.{js,ts,jsx,tsx}',
+  ],
+  // ...
+}
+```
+
+## Project Structure
+
+After installation, your project should look like:
+
+```
+app/
+├── api/
+│   └── auth/
+│       └── [...all]/
+│           └── route.ts      # better-auth API handler
+├── auth/
+│   ├── sign-in/
+│   │   └── page.tsx          # Sign-in page
+│   └── forgot-password/
+│       └── page.tsx          # Forgot password page
+└── dashboard/
+    └── page.tsx              # Protected page
+lib/
+├── auth.ts                   # Server-side auth config
+└── auth-client.ts            # Client-side auth client
+```
+
+## Next Steps
+
+- [Protect routes with middleware](/docs/guides/nextjs-middleware)
+- [View complete example](/docs/examples/nextjs-example)
+- [Customize the component](/docs/components/credential-login)
+

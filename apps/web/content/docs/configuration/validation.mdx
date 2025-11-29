@@ -1,0 +1,324 @@
+---
+title: Password Validation
+description: Configure client-side password validation rules
+icon: ShieldCheck
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Password Validation
+
+Configure client-side password validation to provide immediate feedback to users before form submission.
+
+## Basic Usage
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  passwordValidation={{
+    minLength: 8,
+    requireUppercase: true,
+    requireNumbers: true,
+  }}
+/>
+```
+
+## Configuration Options
+
+### minLength
+
+Minimum number of characters required.
+
+| Property | Type | Default | Min | Max |
+|----------|------|---------|-----|-----|
+| `minLength` | `number` | `8` | `4` | `128` |
+
+```tsx
+passwordValidation={{
+  minLength: 12,
+}}
+```
+
+### maxLength
+
+Maximum number of characters allowed.
+
+| Property | Type | Default | Min | Max |
+|----------|------|---------|-----|-----|
+| `maxLength` | `number` | `256` | `8` | `256` |
+
+```tsx
+passwordValidation={{
+  maxLength: 128,
+}}
+```
+
+### requireUppercase
+
+Require at least one uppercase letter (A-Z).
+
+```tsx
+passwordValidation={{
+  requireUppercase: true,
+}}
+```
+
+### requireLowercase
+
+Require at least one lowercase letter (a-z).
+
+```tsx
+passwordValidation={{
+  requireLowercase: true,
+}}
+```
+
+### requireNumbers
+
+Require at least one numeric digit (0-9).
+
+```tsx
+passwordValidation={{
+  requireNumbers: true,
+}}
+```
+
+### requireSymbols
+
+Require at least one special character.
+
+```tsx
+passwordValidation={{
+  requireSymbols: true,
+}}
+```
+
+Accepted symbols include: `! @ # $ % ^ & * ( ) _ + - = [ ] { } | ; : ' " , . ? /` and similar special characters.
+
+## Preset Configurations
+
+### Minimal (Default)
+
+```tsx
+passwordValidation={{
+  minLength: 8,
+}}
+```
+
+Good for: Development, low-security applications
+
+### Standard
+
+```tsx
+passwordValidation={{
+  minLength: 10,
+  requireUppercase: true,
+  requireNumbers: true,
+}}
+```
+
+Good for: Most web applications
+
+### Strong
+
+```tsx
+passwordValidation={{
+  minLength: 12,
+  requireUppercase: true,
+  requireLowercase: true,
+  requireNumbers: true,
+  requireSymbols: true,
+}}
+```
+
+Good for: Financial applications, healthcare, enterprise
+
+### Enterprise
+
+```tsx
+passwordValidation={{
+  minLength: 16,
+  maxLength: 128,
+  requireUppercase: true,
+  requireLowercase: true,
+  requireNumbers: true,
+  requireSymbols: true,
+}}
+```
+
+Good for: Government, military, high-security environments
+
+## Validation Messages
+
+The component displays user-friendly error messages based on which rules fail:
+
+| Rule | Error Message |
+|------|---------------|
+| `minLength` | "Password must be at least X characters" |
+| `maxLength` | "Password must not exceed X characters" |
+| `requireUppercase` | "Password must contain at least one uppercase letter" |
+| `requireLowercase` | "Password must contain at least one lowercase letter" |
+| `requireNumbers` | "Password must contain at least one number" |
+| `requireSymbols` | "Password must contain at least one special character" |
+
+## Custom Error Messages
+
+Override the default messages via i18n:
+
+```typescript
+import i18n from 'i18next'
+
+i18n.addResourceBundle('en', 'translation', {
+  auth: {
+    errors: {
+      passwordTooShort: 'Your password needs to be longer',
+      passwordTooLong: 'That password is too long',
+      passwordNeedsUppercase: 'Add a capital letter',
+      passwordNeedsLowercase: 'Add a lowercase letter',
+      passwordNeedsNumber: 'Include a number',
+      passwordNeedsSymbol: 'Include a special character like !@#$',
+    }
+  }
+})
+```
+
+## Real-time Validation
+
+Validation happens in real-time as the user types:
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  enableClientValidation={true}  // default
+  passwordValidation={{
+    minLength: 12,
+    requireUppercase: true,
+    requireNumbers: true,
+  }}
+/>
+```
+
+<Callout type="info">
+  Real-time validation provides immediate feedback without waiting for form submission, improving user experience.
+</Callout>
+
+## Disable Client Validation
+
+In some cases, you may want to rely solely on server-side validation:
+
+```tsx
+<CredentialLoginForm
+  authMethod="email"
+  authClient={authClient}
+  enableClientValidation={false}
+/>
+```
+
+<Callout type="warn">
+  Disabling client validation means users won't see password requirements until after submission. Server-side validation is always recommended as a backup.
+</Callout>
+
+## Password Strength Indicator
+
+While not built-in, you can add a password strength indicator using the validation rules:
+
+```tsx
+import { useMemo } from 'react'
+
+function PasswordStrengthIndicator({ password, rules }) {
+  const strength = useMemo(() => {
+    let score = 0
+    if (password.length >= rules.minLength) score++
+    if (rules.requireUppercase && /[A-Z]/.test(password)) score++
+    if (rules.requireLowercase && /[a-z]/.test(password)) score++
+    if (rules.requireNumbers && /[0-9]/.test(password)) score++
+    if (rules.requireSymbols && /[^a-zA-Z0-9]/.test(password)) score++
+    return score
+  }, [password, rules])
+
+  const maxScore = Object.values(rules).filter(Boolean).length + 1
+  const percentage = (score / maxScore) * 100
+
+  return (
+    <div className="mt-2">
+      <div className="h-2 bg-gray-200 rounded">
+        <div
+          className={`h-full rounded transition-all ${
+            percentage < 40 ? 'bg-red-500' :
+            percentage < 70 ? 'bg-yellow-500' : 'bg-green-500'
+          }`}
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+      <p className="text-sm mt-1">
+        {percentage < 40 ? 'Weak' : percentage < 70 ? 'Medium' : 'Strong'}
+      </p>
+    </div>
+  )
+}
+```
+
+## Server-Side Validation
+
+<Callout type="error">
+  Always implement server-side validation! Client-side validation can be bypassed.
+</Callout>
+
+Match your better-auth server configuration to your client rules:
+
+```typescript title="lib/auth.ts"
+import { betterAuth } from 'better-auth'
+
+export const auth = betterAuth({
+  emailAndPassword: {
+    enabled: true,
+    password: {
+      minLength: 12,
+      maxLength: 128,
+      // Server-side regex validation
+      validate: (password) => {
+        if (!/[A-Z]/.test(password)) {
+          return 'Password must contain uppercase letter'
+        }
+        if (!/[0-9]/.test(password)) {
+          return 'Password must contain a number'
+        }
+        return true
+      }
+    }
+  },
+})
+```
+
+## Best Practices
+
+1. **Balance security and usability** - Too strict requirements lead to weak passwords written on sticky notes.
+
+2. **Use minimum length over complexity** - A 16-character passphrase is often stronger than an 8-character complex password.
+
+3. **Match client and server rules** - Inconsistent validation confuses users.
+
+4. **Provide clear feedback** - Show exactly which requirements aren't met.
+
+5. **Consider password managers** - Don't restrict password length too much; password managers generate long random passwords.
+
+## NIST Guidelines
+
+Following NIST SP 800-63B recommendations:
+
+- ✅ Minimum 8 characters (preferably 12+)
+- ✅ Allow up to 64+ characters
+- ✅ Allow all printable characters
+- ❌ Don't require periodic password changes
+- ❌ Don't use knowledge-based questions
+- ✅ Check against known compromised passwords (server-side)
+
+## Related
+
+- [Authentication Methods](/docs/configuration/authentication)
+- [CredentialLoginForm API](/docs/components/credential-login)
+- [Troubleshooting](/docs/troubleshooting)
+

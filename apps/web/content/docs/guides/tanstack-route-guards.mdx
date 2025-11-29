@@ -1,0 +1,295 @@
+---
+title: TanStack Route Guards
+description: Protect routes with TanStack Router beforeLoad guards
+---
+
+# TanStack Route Guards
+
+This guide shows how to protect routes using TanStack Router's `beforeLoad` guards with better-auth.
+
+## Basic Route Protection
+
+Use `beforeLoad` to check authentication before loading a route:
+
+```tsx title="app/routes/dashboard/index.tsx"
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { authClient } from '@/lib/auth-client'
+
+export const Route = createFileRoute('/dashboard/')({
+  beforeLoad: async ({ location }) => {
+    const session = await authClient.session.get()
+
+    if (!session) {
+      throw redirect({
+        to: '/auth/sign-in',
+        search: {
+          callbackUrl: location.pathname,
+        },
+      })
+    }
+
+    return { session }
+  },
+  component: DashboardPage,
+})
+
+function DashboardPage() {
+  const { session } = Route.useRouteContext()
+  return <div>Welcome, {session.user.email}</div>
+}
+```
+
+## Guest-Only Routes
+
+Redirect authenticated users away from auth pages:
+
+```tsx title="app/routes/auth/sign-in.tsx"
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { authClient } from '@/lib/auth-client'
+
+export const Route = createFileRoute('/auth/sign-in')({
+  beforeLoad: async () => {
+    const session = await authClient.session.get()
+
+    if (session) {
+      throw redirect({
+        to: '/dashboard',
+      })
+    }
+
+    return null
+  },
+  component: SignInPage,
+})
+```
+
+## Shared Auth Guard
+
+Create reusable auth guard logic:
+
+```typescript title="app/lib/guards.ts"
+import { redirect } from '@tanstack/react-router'
+import { authClient } from './auth-client'
+
+export async function requireAuth(location: { pathname: string }) {
+  const session = await authClient.session.get()
+
+  if (!session) {
+    throw redirect({
+      to: '/auth/sign-in',
+      search: { callbackUrl: location.pathname },
+    })
+  }
+
+  return { session }
+}
+
+export async function requireGuest() {
+  const session = await authClient.session.get()
+
+  if (session) {
+    throw redirect({ to: '/dashboard' })
+  }
+
+  return null
+}
+
+export async function requireRole(
+  role: string,
+  location: { pathname: string }
+) {
+  const session = await authClient.session.get()
+
+  if (!session) {
+    throw redirect({
+      to: '/auth/sign-in',
+      search: { callbackUrl: location.pathname },
+    })
+  }
+
+  if (session.user.role !== role && session.user.role !== 'admin') {
+    throw redirect({ to: '/unauthorized' })
+  }
+
+  return { session }
+}
+```
+
+Usage in routes:
+
+```tsx title="app/routes/dashboard/index.tsx"
+import { createFileRoute } from '@tanstack/react-router'
+import { requireAuth } from '@/lib/guards'
+
+export const Route = createFileRoute('/dashboard/')({
+  beforeLoad: ({ location }) => requireAuth(location),
+  component: DashboardPage,
+})
+```
+
+## Route Context Sharing
+
+Share session data across child routes:
+
+```tsx title="app/routes/_authenticated.tsx"
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { authClient } from '@/lib/auth-client'
+
+export const Route = createFileRoute('/_authenticated')({
+  beforeLoad: async ({ location }) => {
+    const session = await authClient.session.get()
+
+    if (!session) {
+      throw redirect({
+        to: '/auth/sign-in',
+        search: { callbackUrl: location.pathname },
+      })
+    }
+
+    // This context is available to all child routes
+    return { session }
+  },
+  component: AuthenticatedLayout,
+})
+
+function AuthenticatedLayout() {
+  const { session } = Route.useRouteContext()
+
+  return (
+    <div>
+      <header>
+        <span>Logged in as {session.user.email}</span>
+      </header>
+      <Outlet />
+    </div>
+  )
+}
+```
+
+Child routes automatically get the session:
+
+```tsx title="app/routes/_authenticated/dashboard.tsx"
+import { createFileRoute } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/_authenticated/dashboard')({
+  component: DashboardPage,
+})
+
+function DashboardPage() {
+  // Access parent context
+  const { session } = Route.useRouteContext()
+  return <div>Dashboard for {session.user.name}</div>
+}
+```
+
+## Search Params for Callback URLs
+
+Handle callback URLs with type-safe search params:
+
+```tsx title="app/routes/auth/sign-in.tsx"
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { z } from 'zod'
+
+const searchSchema = z.object({
+  callbackUrl: z.string().optional().default('/dashboard'),
+})
+
+export const Route = createFileRoute('/auth/sign-in')({
+  validateSearch: searchSchema,
+  component: SignInPage,
+})
+
+function SignInPage() {
+  const navigate = useNavigate()
+  const { callbackUrl } = Route.useSearch()
+
+  const handleSuccess = () => {
+    navigate({ to: callbackUrl })
+  }
+
+  return (
+    <CredentialLoginForm
+      authMethod="email"
+      authClient={authClient}
+      onSuccess={handleSuccess}
+    />
+  )
+}
+```
+
+## Loading States
+
+Handle loading states during auth checks:
+
+```tsx title="app/routes/dashboard/index.tsx"
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { authClient } from '@/lib/auth-client'
+
+export const Route = createFileRoute('/dashboard/')({
+  beforeLoad: async ({ location }) => {
+    const session = await authClient.session.get()
+
+    if (!session) {
+      throw redirect({
+        to: '/auth/sign-in',
+        search: { callbackUrl: location.pathname },
+      })
+    }
+
+    return { session }
+  },
+  pendingComponent: () => (
+    <div className="flex h-screen items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+    </div>
+  ),
+  errorComponent: ({ error }) => (
+    <div className="flex h-screen items-center justify-center">
+      <div className="text-red-600">Error: {error.message}</div>
+    </div>
+  ),
+  component: DashboardPage,
+})
+```
+
+## Role-Based Route Protection
+
+```tsx title="app/routes/admin/index.tsx"
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { authClient } from '@/lib/auth-client'
+
+export const Route = createFileRoute('/admin/')({
+  beforeLoad: async ({ location }) => {
+    const session = await authClient.session.get()
+
+    if (!session) {
+      throw redirect({
+        to: '/auth/sign-in',
+        search: { callbackUrl: location.pathname },
+      })
+    }
+
+    if (session.user.role !== 'admin') {
+      throw redirect({ to: '/unauthorized' })
+    }
+
+    return { session }
+  },
+  component: AdminPage,
+})
+```
+
+## Best Practices
+
+1. **Use beforeLoad for all auth checks** - It runs before the component renders
+2. **Share context through layout routes** - Avoid duplicate session fetches
+3. **Use type-safe search params** - Leverage Zod for validation
+4. **Handle loading and error states** - Improve UX with pendingComponent
+5. **Centralize guard logic** - Create reusable guard functions
+6. **Use redirect() from TanStack Router** - Not window.location
+
+## Next Steps
+
+- [View complete TanStack Start example](/docs/examples/tanstack-example)
+- [Configure authentication options](/docs/components/credential-login)
+

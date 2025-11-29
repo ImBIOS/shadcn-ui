@@ -1,0 +1,257 @@
+---
+title: Next.js Middleware
+description: Protect routes with Next.js middleware and better-auth
+---
+
+# Next.js Middleware Protection
+
+This guide shows how to protect routes using Next.js middleware with better-auth.
+
+## Basic Middleware Setup
+
+```typescript title="middleware.ts"
+import { NextRequest, NextResponse } from 'next/server'
+
+// Routes that require authentication
+const protectedRoutes = ['/dashboard', '/settings', '/profile']
+
+// Routes that should redirect to dashboard if already logged in
+const authRoutes = ['/auth/sign-in', '/auth/sign-up']
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Get session token from cookie
+  const sessionToken = request.cookies.get('better-auth.session_token')?.value
+
+  // Check if route requires authentication
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  )
+
+  // Check if route is an auth route
+  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route))
+
+  // Redirect to sign-in if accessing protected route without session
+  if (isProtectedRoute && !sessionToken) {
+    const signInUrl = new URL('/auth/sign-in', request.url)
+    signInUrl.searchParams.set('callbackUrl', pathname)
+    return NextResponse.redirect(signInUrl)
+  }
+
+  // Redirect to dashboard if accessing auth route with active session
+  if (isAuthRoute && sessionToken) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: [
+    // Match all routes except static files and API routes
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
+}
+```
+
+## Session Validation Middleware
+
+For more robust protection, validate the session with the server:
+
+```typescript title="middleware.ts"
+import { NextRequest, NextResponse } from 'next/server'
+
+const protectedRoutes = ['/dashboard', '/settings', '/profile']
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Only check protected routes
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  )
+
+  if (!isProtectedRoute) {
+    return NextResponse.next()
+  }
+
+  // Validate session with better-auth
+  try {
+    const sessionResponse = await fetch(
+      new URL('/api/auth/session', request.url),
+      {
+        headers: {
+          cookie: request.headers.get('cookie') || '',
+        },
+      }
+    )
+
+    if (!sessionResponse.ok) {
+      throw new Error('Session invalid')
+    }
+
+    const session = await sessionResponse.json()
+
+    if (!session?.user) {
+      throw new Error('No user in session')
+    }
+
+    // Session is valid, continue
+    return NextResponse.next()
+  } catch {
+    // Session invalid, redirect to sign-in
+    const signInUrl = new URL('/auth/sign-in', request.url)
+    signInUrl.searchParams.set('callbackUrl', pathname)
+    return NextResponse.redirect(signInUrl)
+  }
+}
+
+export const config = {
+  matcher: ['/dashboard/:path*', '/settings/:path*', '/profile/:path*'],
+}
+```
+
+## Role-Based Access Control
+
+Protect routes based on user roles:
+
+```typescript title="middleware.ts"
+import { NextRequest, NextResponse } from 'next/server'
+
+const roleRoutes = {
+  admin: ['/admin', '/admin/users', '/admin/settings'],
+  moderator: ['/mod', '/mod/reports'],
+}
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Check if route requires specific role
+  const requiredRole = Object.entries(roleRoutes).find(([_, routes]) =>
+    routes.some((route) => pathname.startsWith(route))
+  )?.[0]
+
+  if (!requiredRole) {
+    return NextResponse.next()
+  }
+
+  // Get session and check role
+  try {
+    const sessionResponse = await fetch(
+      new URL('/api/auth/session', request.url),
+      {
+        headers: {
+          cookie: request.headers.get('cookie') || '',
+        },
+      }
+    )
+
+    const session = await sessionResponse.json()
+
+    if (!session?.user?.role) {
+      return NextResponse.redirect(new URL('/auth/sign-in', request.url))
+    }
+
+    if (session.user.role !== requiredRole && session.user.role !== 'admin') {
+      return NextResponse.redirect(new URL('/unauthorized', request.url))
+    }
+
+    return NextResponse.next()
+  } catch {
+    return NextResponse.redirect(new URL('/auth/sign-in', request.url))
+  }
+}
+```
+
+## API Route Protection
+
+Protect API routes in route handlers:
+
+```typescript title="app/api/protected/route.ts"
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+export async function GET() {
+  const session = await auth.api.getSession({
+    headers: headers(),
+  })
+
+  if (!session) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    )
+  }
+
+  return NextResponse.json({
+    message: 'Protected data',
+    user: session.user,
+  })
+}
+```
+
+## Server Component Protection
+
+Protect Server Components with session checks:
+
+```tsx title="app/dashboard/page.tsx"
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
+
+export default async function DashboardPage() {
+  const session = await auth.api.getSession({
+    headers: headers(),
+  })
+
+  if (!session) {
+    redirect('/auth/sign-in?callbackUrl=/dashboard')
+  }
+
+  return (
+    <div>
+      <h1>Welcome, {session.user.name}</h1>
+      {/* Protected content */}
+    </div>
+  )
+}
+```
+
+## Edge Runtime Compatibility
+
+For Edge Runtime middleware, use lightweight session checks:
+
+```typescript title="middleware.ts"
+export const runtime = 'edge'
+
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function middleware(request: NextRequest) {
+  // In Edge Runtime, check cookie presence only
+  // Full validation happens in Server Components/API routes
+  const sessionToken = request.cookies.get('better-auth.session_token')
+
+  if (!sessionToken) {
+    return NextResponse.redirect(new URL('/auth/sign-in', request.url))
+  }
+
+  return NextResponse.next()
+}
+```
+
+## Best Practices
+
+1. **Use middleware for routing protection**, not data validation
+2. **Validate sessions server-side** for sensitive operations
+3. **Keep middleware lightweight** for performance
+4. **Use Edge Runtime** when possible for faster responses
+5. **Implement proper error handling** for session validation failures
+6. **Set appropriate cookie options** (httpOnly, secure, sameSite)
+
+## Next Steps
+
+- [View complete Next.js example](/docs/examples/nextjs-example)
+- [Configure authentication options](/docs/components/credential-login)
+

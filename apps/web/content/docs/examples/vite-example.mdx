@@ -1,0 +1,260 @@
+---
+title: Vite Example
+description: Complete React + Vite integration example with better-auth-ui
+---
+
+# Complete Vite Example
+
+This example shows a complete authentication flow in a React + Vite project with React Router.
+
+## Full Sign-In Page
+
+```tsx title="src/routes/auth/sign-in.tsx"
+import { CredentialLoginForm } from '@better-auth-ui/components'
+import { authClient } from '@/lib/auth-client'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
+
+export default function SignInPage() {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-md">
+        <div className="rounded-lg border bg-white p-8 shadow-sm">
+          {/* Header */}
+          <div className="mb-6 text-center">
+            <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
+            <p className="mt-2 text-gray-600">
+              Sign in to access your account
+            </p>
+          </div>
+
+          {/* Login Form */}
+          <CredentialLoginForm
+            authMethod="email"
+            authClient={authClient}
+            showRememberMe={true}
+            showForgotPassword={true}
+            forgotPasswordUrl="/auth/forgot-password"
+            passwordValidation={{
+              minLength: 8,
+              requireUppercase: true,
+              requireNumbers: true,
+            }}
+            onSuccess={() => {
+              navigate(callbackUrl, { replace: true })
+            }}
+            onError={(error) => {
+              console.error('Authentication failed:', error.code, error.message)
+            }}
+            className="mt-4"
+          />
+
+          {/* Footer Links */}
+          <div className="mt-6 text-center text-sm text-gray-600">
+            Don't have an account?{' '}
+            <Link
+              to="/auth/sign-up"
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
+              Sign up
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+## Auth Client Configuration
+
+```typescript title="src/lib/auth-client.ts"
+import { createAuthClient } from 'better-auth/client'
+
+export const authClient = createAuthClient({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+})
+
+// Type-safe auth helpers
+export async function getSession() {
+  try {
+    const session = await authClient.session.get()
+    return session
+  } catch {
+    return null
+  }
+}
+
+export async function signOut() {
+  await authClient.signOut()
+}
+```
+
+## Router Configuration with Auth Guards
+
+```tsx title="src/main.tsx"
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import {
+  createBrowserRouter,
+  RouterProvider,
+  redirect,
+  Outlet,
+} from 'react-router-dom'
+import { authClient, getSession } from './lib/auth-client'
+import SignInPage from './routes/auth/sign-in'
+import DashboardPage from './routes/dashboard'
+import Layout from './components/layout'
+import './index.css'
+
+// Auth guard loader
+async function requireAuth() {
+  const session = await getSession()
+  if (!session) {
+    throw redirect('/auth/sign-in?callbackUrl=' + window.location.pathname)
+  }
+  return { session }
+}
+
+// Guest guard loader (redirect if already logged in)
+async function requireGuest() {
+  const session = await getSession()
+  if (session) {
+    throw redirect('/dashboard')
+  }
+  return null
+}
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <div>Home Page</div>,
+      },
+      {
+        path: 'auth',
+        children: [
+          {
+            path: 'sign-in',
+            element: <SignInPage />,
+            loader: requireGuest,
+          },
+          {
+            path: 'sign-up',
+            element: <div>Sign Up Page</div>,
+            loader: requireGuest,
+          },
+        ],
+      },
+      {
+        path: 'dashboard',
+        element: <DashboardPage />,
+        loader: requireAuth,
+      },
+    ],
+  },
+])
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>
+)
+```
+
+## Protected Dashboard Page
+
+```tsx title="src/routes/dashboard.tsx"
+import { useLoaderData, useNavigate } from 'react-router-dom'
+import { signOut } from '@/lib/auth-client'
+import { useState } from 'react'
+
+export default function DashboardPage() {
+  const { session } = useLoaderData() as { session: any }
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSignOut = async () => {
+    setIsLoading(true)
+    try {
+      await signOut()
+      navigate('/auth/sign-in', { replace: true })
+    } catch (error) {
+      console.error('Sign out failed:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="rounded-lg border bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+              <p className="text-gray-600">
+                Welcome, {session.user.name || session.user.email}
+              </p>
+            </div>
+            <button
+              onClick={handleSignOut}
+              disabled={isLoading}
+              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+            >
+              {isLoading ? 'Signing out...' : 'Sign out'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+## Layout Component
+
+```tsx title="src/components/layout.tsx"
+import { Outlet, Link } from 'react-router-dom'
+
+export default function Layout() {
+  return (
+    <div className="min-h-screen">
+      <header className="border-b bg-white">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between p-4">
+          <Link to="/" className="text-xl font-bold">
+            My App
+          </Link>
+          <div className="flex gap-4">
+            <Link to="/auth/sign-in" className="text-gray-600 hover:text-gray-900">
+              Sign In
+            </Link>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  )
+}
+```
+
+## Environment Variables
+
+```bash title=".env"
+VITE_API_URL="http://localhost:3000"
+```
+
+## Next Steps
+
+- [Learn more about route protection](/docs/guides/vite-router)
+- [Customize form appearance](/docs/components/credential-login)
+- [Add OAuth providers](/docs/guides/oauth-providers)
+

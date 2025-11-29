@@ -1,1 +1,0 @@
-console.log("Hello from better-auth-ui!");

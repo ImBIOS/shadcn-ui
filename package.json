@@ -1,11 +1,37 @@
 {
   "name": "better-auth-ui",
-  "module": "index.ts",
-  "type": "module",
   "private": true,
-  "devDependencies": {
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "check": "biome check --write .",
+    "prepare": "husky",
+    "dev": "nx run-many -t dev",
+    "build": "nx run-many -t build",
+    "check-types": "nx run-many -t check-types",
+    "dev:web": "nx run web:dev",
+    "test": "nx run-many -t test",
+    "test:watch": "nx run-many -t test:watch",
+    "test:coverage": "nx run-many -t test:coverage"
   },
-  "peerDependencies": {
-    "typescript": "^5"
-  }
+  "devDependencies": {
+    "@biomejs/biome": "2.3.7",
+    "@cloudflare/workers-types": "^4.20250822.0",
+    "@nx/js": "^22.1.2",
+    "@types/node": "^22.13.11",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "nx": "^22.1.2",
+    "typescript": "^5.9.3",
+    "ultracite": "6.3.6"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+      "pnpm dlx ultracite fix"
+    ]
+  },
+  "packageManager": "pnpm@10.23.0"
 }

@@ -1,0 +1,17 @@
+packages:
+  - apps/*
+  - packages/*
+
+catalog:
+  '@orpc/client': ^1.10.0
+  '@orpc/openapi': ^1.10.0
+  '@orpc/server': ^1.10.0
+  '@orpc/zod': ^1.10.0
+  tailwind-merge: ^3.3.1
+  vite-tsconfig-paths: ^5.1.4
+
+onlyBuiltDependencies:
+  - esbuild
+  - nx
+  - sharp
+  - workerd
