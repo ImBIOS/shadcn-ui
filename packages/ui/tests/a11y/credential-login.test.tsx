@@ -16,26 +16,11 @@ import "../../src/locales/index";
 const EMAIL_REGEX = /email/i;
 const PASSWORD_REGEX = /password/i;
 const SIGN_IN_REGEX = /sign in/i;
-const _USERNAME_REGEX = /username/i;
-const _PHONE_REGEX = /phone/i;
 const REMEMBER_ME_REGEX = /remember me/i;
 const FORGOT_PASSWORD_REGEX = /forgot password/i;
-const _SHOW_PASSWORD_REGEX = /show password/i;
-const _HIDE_PASSWORD_REGEX = /hide password/i;
 const SIGNING_IN_REGEX = /signing in/i;
 const REQUIRED_REGEX = /required/i;
-const _INVALID_EMAIL_REGEX = /valid email/i;
 const PASSWORD_TOO_SHORT_REGEX = /passwordTooShort/i;
-const _PASSWORD_TOO_LONG_REGEX = /password is too long/i;
-const _PASSWORD_REQUIRE_UPPERCASE_REGEX = /password must contain uppercase/i;
-const _PASSWORD_REQUIRE_LOWERCASE_REGEX = /password must contain lowercase/i;
-const _PASSWORD_REQUIRE_NUMBERS_REGEX = /password must contain numbers/i;
-const _PASSWORD_REQUIRE_SYMBOLS_REGEX = /password must contain symbols/i;
-const _MINIMUM_12_CHARACTERS_REGEX = /minimum 12 characters/i;
-const _MUST_CONTAIN_UPPERCASE_REGEX = /must contain uppercase/i;
-const _MUST_CONTAIN_LOWERCASE_REGEX = /must contain lowercase/i;
-const _MUST_CONTAIN_NUMBERS_REGEX = /must contain numbers/i;
-const _MUST_CONTAIN_SYMBOLS_REGEX = /must contain symbols/i;
 
 // Mock authClient
 const createMockAuthClient = () => ({

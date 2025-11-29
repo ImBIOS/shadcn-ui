@@ -37,7 +37,6 @@ const createMockAuthClient = (overrides = {}) => ({
 
 describe("CredentialLoginForm - Email Authentication", () => {
   const mockOnSuccess = vi.fn();
-  const _mockOnError = vi.fn();
   let mockAuthClient: ReturnType<typeof createMockAuthClient>;
 
   beforeEach(() => {

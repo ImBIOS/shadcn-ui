@@ -55,7 +55,7 @@ describe("Password Validation Schema", () => {
       const result = schema.safeParse("short");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
+        expect(result.error.issues[0]?.message).toBe(
           "auth.errors.passwordTooShort"
         );
       }
@@ -85,7 +85,7 @@ describe("Password Validation Schema", () => {
       const result = schema.safeParse("a".repeat(65));
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
+        expect(result.error.issues[0]?.message).toBe(
           "auth.errors.passwordTooLong"
         );
       }
@@ -109,7 +109,7 @@ describe("Password Validation Schema", () => {
       const result = schema.safeParse("password123");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
+        expect(result.error.issues[0]?.message).toBe(
           "auth.errors.passwordRequireUppercase"
         );
       }
@@ -133,7 +133,7 @@ describe("Password Validation Schema", () => {
       const result = schema.safeParse("PASSWORD123");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
+        expect(result.error.issues[0]?.message).toBe(
           "auth.errors.passwordRequireLowercase"
         );
       }
@@ -157,7 +157,7 @@ describe("Password Validation Schema", () => {
       const result = schema.safeParse("Password!!");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
+        expect(result.error.issues[0]?.message).toBe(
           "auth.errors.passwordRequireNumbers"
         );
       }
@@ -218,7 +218,7 @@ describe("Password Validation Schema", () => {
       const result = schema.safeParse("Password123");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
+        expect(result.error.issues[0]?.message).toBe(
           "auth.errors.passwordRequireSymbols"
         );
       }

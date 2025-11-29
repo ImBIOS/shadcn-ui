@@ -21,7 +21,8 @@ export const getRouter = () => {
 };
 
 declare module "@tanstack/react-router" {
-  type Register = {
+  // biome-ignore lint/style/useConsistentTypeDefinitions: Interface merging required for TanStack Router
+  interface Register {
     router: ReturnType<typeof getRouter>;
-  };
+  }
 }

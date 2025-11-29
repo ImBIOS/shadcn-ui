@@ -19,7 +19,7 @@ const CalendarRoot = ({
   rootRef,
   ...props
 }: React.ComponentProps<"div"> & {
-  rootRef?: React.RefObject<HTMLDivElement>;
+  rootRef?: React.Ref<HTMLDivElement>;
 }) => (
   <div
     className={cn(className)}
